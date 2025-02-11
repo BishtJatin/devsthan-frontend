@@ -63,7 +63,8 @@ const Destinations = ({ destinations,destinationsBanner }) => {
     <>
       <Head>
         {/* Meta Tags for SEO */}
-        <title>Sacred Journeys: Explore the World's Holiest Destinations</title>
+        <title>Sacred Journeys: Explore the World&apos;s Holiest Destinations</title>
+
         <meta
           name="description"
           content="Discover and explore the world's holiest destinations with our curated sacred journeys. Perfect for spiritual seekers and travelers."
