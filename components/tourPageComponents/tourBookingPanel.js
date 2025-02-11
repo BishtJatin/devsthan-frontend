@@ -53,20 +53,19 @@ const TourBookingPanel = ({
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 990px)');
+    const mediaQuery = window.matchMedia("(min-width: 990px)");
     setIsLargeScreen(mediaQuery.matches);
 
     const handleResize = (e) => {
       setIsLargeScreen(e.matches);
     };
 
-    mediaQuery.addEventListener('change', handleResize);
+    mediaQuery.addEventListener("change", handleResize);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleResize);
+      mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
-
 
   const handlePaymentChangePartial = (event) => {
     setPaymentOption(event.target.value);
@@ -88,8 +87,6 @@ const TourBookingPanel = ({
       setStoredUUID(uuid);
     }
   }, [uuid]);
-
-
 
   // Synchronize formData.uuid with storedUUID
   useEffect(() => {
@@ -183,7 +180,6 @@ const TourBookingPanel = ({
 
   const [selectedPaymentOption, setSelectedPaymentOption] = useState("default");
 
- 
   const handleBookNow = async () => {
     setIsLoadingBook(true);
     const departureDate = localStorage.getItem("departureDate"); // Assuming the key is 'departureDate'
@@ -218,15 +214,17 @@ const TourBookingPanel = ({
         body: {
           category: category,
           adults: bookbutton.adults,
-          childern: bookbutton.children,  // Fixed typo: "childern" -> "children"
+          childern: bookbutton.children, // Fixed typo: "childern" -> "children"
           tourId: uuid,
           seasonId: bookbutton.seasonId,
-          ...(paymentOption === "partial" && { partialPayment: partialPayment.amount }),
+          ...(paymentOption === "partial" && {
+            partialPayment: partialPayment.amount,
+          }),
           ...(token ? { token } : { userTempId }),
-          tourType:"openHours"
+          tourType: "openHours",
         },
       });
-      
+
       if (response.success) {
         toast.success("Added to cart successfully!");
 
@@ -237,8 +235,8 @@ const TourBookingPanel = ({
 
         const queryParams = {
           date: date,
-          tourType:"openHours",
-          category:category
+          tourType: "openHours",
+          category: category,
         };
 
         if (selectedPaymentOption === "partial") {
@@ -276,84 +274,96 @@ const TourBookingPanel = ({
   };
   const handlePersonChange = (type, operation) => {
     setBookButton((prev) => {
-      const newAdults = type === "adults" 
-        ? operation === "increase" 
-          ? (prev.adults || 0) + 1 
-          : Math.max((prev.adults || 0) - 1, 1) 
-        : prev.adults;
-  
-      const newChildren = type === "children" 
-        ? operation === "increase" 
-          ? (prev.children || 0) + 1 
-          : Math.max((prev.children || 0) - 1, 0) 
-        : prev.children;
-  
+      const newAdults =
+        type === "adults"
+          ? operation === "increase"
+            ? (prev.adults || 0) + 1
+            : Math.max((prev.adults || 0) - 1, 1)
+          : prev.adults;
+
+      const newChildren =
+        type === "children"
+          ? operation === "increase"
+            ? (prev.children || 0) + 1
+            : Math.max((prev.children || 0) - 1, 0)
+          : prev.children;
+
       const totalPersons = newAdults + newChildren;
       console.log("New Children:", newChildren);
-  
+
       // Find the correct season by seasonId
       const selectedS = seasons.find((season) => season._id === selectedSeason);
-      const matchedPricing = selectedS?.pricing.find((p) => p.person === totalPersons) || {};
+      const matchedPricing =
+        selectedS?.pricing.find((p) => p.person === totalPersons) || {};
       console.log("Matched Pricing:", matchedPricing.price);
       console.log("Matched Pricing:", matchedPricing.person);
-  
-     
-  
+
       // Calculate per-person price
       const perPersonPrice = matchedPricing.price / matchedPricing.person;
-      console.log(perPersonPrice)
+      console.log(perPersonPrice);
       // Calculate adult and child prices
       const adultPrice = perPersonPrice * newAdults;
-      const childPrice = (perPersonPrice * 0.5) * newChildren;
+      const childPrice = perPersonPrice * 0.5 * newChildren;
       const totalPrice = adultPrice + childPrice;
-  
+
       console.log("Per Person Price:", perPersonPrice);
       console.log("Adult Price:", adultPrice);
       console.log("Child Price (Half):", childPrice);
       console.log("Total Price:", totalPrice);
-  
-      return calculateUpdatedPrice({ 
-        ...prev, 
-        adults: newAdults, 
-        children: newChildren,
-        totalPrice
-      }, matchedPricing);
+
+      return calculateUpdatedPrice(
+        {
+          ...prev,
+          adults: newAdults,
+          children: newChildren,
+          totalPrice,
+        },
+        matchedPricing
+      );
     });
   };
-  {paymentOption=="partial"}
+  {
+    paymentOption == "partial";
+  }
   const handlePaymentChange = (option) => {
     setPaymentOption(option);
     setBookButton((prev) => {
       const totalPersons = prev.adults + prev.children;
-  
+
       // Find the selected season
       const selectedS = seasons.find((season) => season._id === selectedSeason);
-  
+
       // Find the matched pricing for the total number of persons
-      const matchedPricing = selectedS?.pricing.find((p) => p.person === totalPersons) || {};
-  
+      const matchedPricing =
+        selectedS?.pricing.find((p) => p.person === totalPersons) || {};
+
       return calculateUpdatedPrice(prev, matchedPricing, option);
     });
   };
-  
-  const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption = paymentOption) => {
+
+  const calculateUpdatedPrice = (
+    prev,
+    matchedPricing,
+    newPaymentOption = paymentOption
+  ) => {
     const basePrice = matchedPricing.price || prev.price || 0;
-  
+
     // Apply partial payment discount if applicable
-    const discount = newPaymentOption === "partial" && partialPayment.amount 
-      ? (basePrice * partialPayment.amount) / 100 
-      : 0;
-  
+    const discount =
+      newPaymentOption === "partial" && partialPayment.amount
+        ? (basePrice * partialPayment.amount) / 100
+        : 0;
+
     const discountedPrice = basePrice - discount;
-    
+
     const totalPersons = prev.adults + prev.children;
     const pricePerAdult = discountedPrice / totalPersons; // Correct per-person price
     const pricePerChild = pricePerAdult * 0.5; // 50% of adult price
-  
+
     const totalAdultPrice = prev.adults * pricePerAdult;
     const totalChildPrice = prev.children * pricePerChild;
     const finalPrice = totalAdultPrice + totalChildPrice;
-  
+
     return {
       ...prev,
       price: finalPrice,
@@ -361,11 +371,6 @@ const TourBookingPanel = ({
       room: matchedPricing.rooms || prev.room,
     };
   };
-
- 
-  
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -422,7 +427,7 @@ const TourBookingPanel = ({
   const callbutton = (index, seasonId) => {
     // Extract the selected season's pricing array
     const pricingArray = seasons[index]?.pricing;
-    setSelectedSeason(seasonId)
+    setSelectedSeason(seasonId);
     // Find the max price in the pricing array
     const maxPricing = pricingArray.reduce(
       (max, current) => {
@@ -465,9 +470,6 @@ const TourBookingPanel = ({
 
   // Button click handlers to increment/decrement adults and children
 
-
-
-
   const [selectedMonth, setSelectedMonth] = useState("All");
 
   // Function to handle month button click
@@ -478,7 +480,9 @@ const TourBookingPanel = ({
   // Get unique months from the data
   const uniqueMonths = Array.from(
     new Set(
-      processedSeasons.map((season) => new Date(season.startDate).getMonth() + 1)
+      processedSeasons.map(
+        (season) => new Date(season.startDate).getMonth() + 1
+      )
     )
   );
 
@@ -493,75 +497,81 @@ const TourBookingPanel = ({
     return seasonStartMonth === parseInt(selectedMonth, 10);
   });
 
-
   return (
     <>
       <div className={styles["tour-booking-panel-outer"]}>
-      <div className={styles["tour-seasonsCard"]}>
-      <h1 className={styles["tour-seasonsCard-heading"]}>Seasons</h1>
+        <div className={styles["tour-seasonsCard"]}>
+          <h1 className={styles["tour-seasonsCard-heading"]}>Seasons</h1>
 
-      {/* Buttons for filtering by month */}
-      <div className={styles["filter-buttons"]}>
-        <button
-          className={`${styles["filter-button"]} ${
-            selectedMonth === "All" ? styles["active-button"] : ""
-          }`}
-          onClick={() => handleMonthClick("All")}
-        >
-          All
-        </button>
-        {uniqueMonths.map((month) => (
-          <button
-            key={month}
-            className={`${styles["filter-button"]} ${
-              selectedMonth === month.toString() ? styles["active-button"] : ""
-            }`}
-            onClick={() => handleMonthClick(month.toString())}
-          >
-            {new Date(0, month - 1).toLocaleString("default", { month: "short" })}
-          </button>
-        ))}
-      </div>
+          {/* Buttons for filtering by month */}
+          <div className={styles["filter-buttons"]}>
+  <button
+    className={`${styles["filter-button"]} ${
+      selectedMonth === "All" ? styles["active-button"] : styles["inactive-button"]
+    }`}
+    onClick={() => handleMonthClick("All")}
+  >
+    All
+  </button>
+  {uniqueMonths.map((month) => (
+    <button
+      key={month}
+      className={`${styles["filter-button"]} ${
+        selectedMonth === month.toString()
+          ? styles["active-button"]
+          : styles["inactive-button"]
+      }`}
+      onClick={() => handleMonthClick(month.toString())}
+    >
+      {new Date(0, month - 1).toLocaleString("default", {
+        month: "short",
+      })}
+    </button>
+  ))}
+</div>
 
-      <div className={styles["seasonsCard"]}>
-        {filteredSeasons.map((season, index) => (
-          <div key={season._id} className={styles["seasonsCard-item"]}>
-            <div className={styles["seasonsCard-it"]}>
-              <p className={styles["seasonsCard-date"]}>
-                <strong>
-                  <IoLocationOutline style={{ color: "green" }} /> Starts{" "}
-                  {formatDay(season.startDate)}
-                </strong>
-                <span>{formatDate(season.startDate)}</span>
-              </p>
-              <p className={styles["seasonsCard-date"]}>
-                <strong>
-                  <IoLocationOutline style={{ color: "red" }} /> Ends{" "}
-                  {formatDay(season.endDate)}
-                </strong>
-                <span>{formatDate(season.endDate)}</span>
-              </p>
-            </div>
-            <div className={styles["seasonsCard-its"]}>
-              <p>
-                <strong>₹{season.maxRoom.pricePerPerson}</strong> /per person
-              </p>
-              <p>
-                <strong>Room:</strong> {season.maxRoom.room}
-              </p>
-            </div>
-            <button
-              className={styles["tour-booking-button-normal"]}
-              onClick={() => callbutton(index, season._id)}
-            >
-              Book Now
-            </button>
+
+          <div className={styles["seasonsCard"]}>
+            {filteredSeasons.map((season, index) => (
+              <div key={season._id} className={styles["seasonsCard-item"]}>
+                <h3  className={styles["seasonsCard-item-heading"]}>{season.seasonName}</h3>
+                <div className={styles["seasonsCard-it"]}>
+                  <p className={styles["seasonsCard-date"]}>
+                    <strong>
+                      <IoLocationOutline style={{ color: "green" }} /> Starts{" "}
+                      {formatDay(season.startDate)}
+                    </strong>
+                    <span>{formatDate(season.startDate)}</span>
+                  </p>
+                  <p className={styles["seasonsCard-date"]}>
+                    <strong>
+                      <IoLocationOutline style={{ color: "red" }} /> Ends{" "}
+                      {formatDay(season.endDate)}
+                    </strong>
+                    <span>{formatDate(season.endDate)}</span>
+                  </p>
+                </div>
+                <div className={styles["seasonsCard-its"]}>
+                  <p>
+                    <strong>₹{season.maxRoom.pricePerPerson}</strong> /per
+                    person
+                  </p>
+                  <p>
+                    <strong>Room:</strong> {season.maxRoom.room}
+                  </p>
+                </div>
+                <button
+                  className={styles["tour-booking-button-normal"]}
+                  onClick={() => callbutton(index, season._id)}
+                >
+                  Book Now
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
-     
-{  console.log(paymentOption=="partial")}
+        </div>
+
+        {console.log(paymentOption == "partial")}
         {showDialouge && (
           <div className={styles["dialog-overlay"]}>
             <div className={styles["dialog-box"]}>
@@ -584,8 +594,6 @@ const TourBookingPanel = ({
                   </div>
                 </div>
 
-              
-
                 {/* <div className={styles["dialog-details"]}>
                   <span className={styles["dialog-badge"]}>{${duration}D / ${duration - 1}N}</span>
                 </div> */}
@@ -601,23 +609,24 @@ const TourBookingPanel = ({
                     </button>
                   )}
                 </div>
-                
+
                 <ToastContainer position="top-right" autoClose={3000} />
               </div>
-                {/* Payment Options */}
-                <div className={styles["payment-options"]}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="default"
-                      checked={paymentOption === "default"}
-                      onChange={() => handlePaymentChange("default")}
-                    />
-                    Default Payment
-                  </label>
+              {/* Payment Options */}
+              <div className={styles["payment-options"]}>
+                <label>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="default"
+                    checked={paymentOption === "default"}
+                    onChange={() => handlePaymentChange("default")}
+                  />
+                  Default Payment
+                </label>
 
-                  {partialPayment.enabled ? <label>
+                {partialPayment.enabled ? (
+                  <label>
                     <input
                       type="radio"
                       name="payment"
@@ -626,17 +635,25 @@ const TourBookingPanel = ({
                       onChange={() => handlePaymentChange("partial")}
                     />
                     Partial Payment
-                  </label> : null}
-
-                </div>
+                  </label>
+                ) : null}
+              </div>
               <div className={styles["dialog-content"]}>
                 <div className={styles["dialog-room-section"]}>
                   <div className={styles["dialog-row"]}>
                     <label>Adult</label>
                     <div className={styles["dialog-counter"]}>
-                      <button onClick={() => handlePersonChange("adults", "decrease")}>-</button>
+                      <button
+                        onClick={() => handlePersonChange("adults", "decrease")}
+                      >
+                        -
+                      </button>
                       <span>{bookbutton?.adults || 1}</span>
-                      <button onClick={() => handlePersonChange("adults", "increase")}>+</button>
+                      <button
+                        onClick={() => handlePersonChange("adults", "increase")}
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
 
@@ -644,9 +661,21 @@ const TourBookingPanel = ({
                   <div className={styles["dialog-row"]}>
                     <label>Children</label>
                     <div className={styles["dialog-counter"]}>
-                      <button onClick={() => handlePersonChange("children", "decrease")}>-</button>
+                      <button
+                        onClick={() =>
+                          handlePersonChange("children", "decrease")
+                        }
+                      >
+                        -
+                      </button>
                       <span>{bookbutton?.children || 0}</span>
-                      <button onClick={() => handlePersonChange("children", "increase")}>+</button>
+                      <button
+                        onClick={() =>
+                          handlePersonChange("children", "increase")
+                        }
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -659,54 +688,58 @@ const TourBookingPanel = ({
           <CustomizedQuery uuid={uuid} handleClose={close} />
         )}
         {isLargeScreen && (
-        <div className={styles["tour-booking-panel"]}>
-          <p className={styles["panel-heading"]}>Book Your Tour</p>
-          <p className={styles["panel-des"]}>
-            Reserve your ideal trip early for a hassle-free trip; secure comfort
-            and convenience!
-          </p>
-          <form className={styles["inquiryForm"]} onSubmit={handleSubmit}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              minLength="2"
-            />
+          <div className={styles["tour-booking-panel"]}>
+            <p className={styles["panel-heading"]}>Book Your Tour</p>
+            <p className={styles["panel-des"]}>
+              Reserve your ideal trip early for a hassle-free trip; secure
+              comfort and convenience!
+            </p>
+            <form className={styles["inquiryForm"]} onSubmit={handleSubmit}>
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                minLength="2"
+              />
 
-            <label>Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              pattern="\d{10}"
-              title="Phone must be a 10-digit number"
-            />
+              <label>Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                pattern="\d{10}"
+                title="Phone must be a 10-digit number"
+              />
 
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
 
-            <label>Message</label>
-            <input
-              type="text"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-            {loadingSubmit ? <Loader /> : <button type="submit">Submit</button>}
-          </form>
-        </div>
-      )}
+              <label>Message</label>
+              <input
+                type="text"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              />
+              {loadingSubmit ? (
+                <Loader />
+              ) : (
+                <button type="submit">Submit</button>
+              )}
+            </form>
+          </div>
+        )}
       </div>
     </>
   );

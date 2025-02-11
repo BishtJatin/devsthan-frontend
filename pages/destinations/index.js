@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import Head from "next/head";
 import styles from './destinations.module.css';
 import { apiCall } from '../../utils/common';
 import Link from 'next/link';
@@ -60,6 +60,44 @@ const Destinations = ({ destinations,destinationsBanner }) => {
 
 
   return (
+    <>
+      <Head>
+        {/* Meta Tags for SEO */}
+        <title>Sacred Journeys: Explore the World's Holiest Destinations</title>
+        <meta
+          name="description"
+          content="Discover and explore the world's holiest destinations with our curated sacred journeys. Perfect for spiritual seekers and travelers."
+        />
+        <meta
+          name="keywords"
+          content="sacred journeys, holy destinations, spiritual travel, pilgrimage, religious tours"
+        />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://yourwebsite.com/destinations" />
+
+        {/* Robots Tag */}
+        <meta name="robots" content="index, follow" />
+
+        {/* Open Graph Meta Tags for Social Sharing */}
+        <meta property="og:title" content="Sacred Journeys: Explore the World's Holiest Destinations" />
+        <meta
+          property="og:description"
+          content="Embark on spiritual journeys to the most revered destinations around the globe."
+        />
+        <meta property="og:image" content="/path-to-your-thumbnail-image.jpg" />
+        <meta property="og:url" content="https://yourwebsite.com/destinations" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Sacred Journeys: Explore the World's Holiest Destinations" />
+        <meta
+          name="twitter:description"
+          content="Explore spiritual journeys to the world's holiest places."
+        />
+        <meta name="twitter:image" content="/path-to-your-thumbnail-image.jpg" />
+      </Head>
     <div className={styles.container}>
      <header className={styles.header}>
         <div className={styles['parallax-container']}>
@@ -73,7 +111,7 @@ const Destinations = ({ destinations,destinationsBanner }) => {
         </div>
       </header>
       <div className={styles['header-text']}>
-                <p className={styles['header-text-subtitle']}> Sacred Journeys</p>
+                <h1 className={styles['header-text-subtitle']}> Sacred Journeys</h1>
                 <h2 className={styles['header-text-title']}>Exploring the Worlds Holiest Destinations</h2>
       </div>
       <div className={styles.grid}>
@@ -92,6 +130,7 @@ const Destinations = ({ destinations,destinationsBanner }) => {
         <button className={styles.nextButton}>&#10095;</button>
       </div> */}
     </div>
+    </>
   );
 };
 

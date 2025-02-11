@@ -177,7 +177,7 @@ max-width: 100%;
   margin-block: 10px;
   justify-content: space-between;
   align-items: center;
-
+  font-size: small;
   z-index: 0;
 
 
@@ -193,7 +193,7 @@ max-width: 100%;
 
   align-items: flex-start;
   padding: 13px 18px;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #63ab45;
   font-weight: 400;
   color: #fff;
@@ -213,9 +213,10 @@ max-width: 100%;
 
 .day-details .content img {
   width: 100%;
- 
+  
   /* Limits the max width */
   height: auto;
+  max-height: 350px;
   /* Maintains aspect ratio */
   border-radius: 8px;
   /* Rounded corners */

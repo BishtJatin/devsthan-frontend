@@ -3,6 +3,14 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import styles from "../../components/itinery/itinery.module.css";
 import Image from "next/image";
+import styled from "styled-components";
+
+const BannerInner = styled(Carousel)`
+  .react-multiple-carousel__arrow{
+    background : transparent;
+  }
+
+  `;
 
 const Meals = ({ itinerary }) => {
   const [isClient, setIsClient] = useState(false);
@@ -45,7 +53,7 @@ const Meals = ({ itinerary }) => {
             <div className={styles["content"]}>
               {/* Render SiteSeen Photos if Available */}
               {itinerary?.siteSeen?.photos?.length > 0 ? (
-                <Carousel
+                <BannerInner
                   responsive={responsive}
                   infinite
                   autoPlay={itinerary.siteSeen.photos.length > 1}
@@ -62,7 +70,7 @@ const Meals = ({ itinerary }) => {
                       />
                     </div>
                   ))}
-                </Carousel>
+                </BannerInner>
               ) : (
                 // Fallback for No Photos
                 <div >

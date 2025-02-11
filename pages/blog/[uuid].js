@@ -31,6 +31,32 @@ export default function Blog({ blogs, blogBanner }) {
       <Head>
         <title>{blogs?.data?.metaTitle || "Blog"}</title>
         <meta name="description" content={blogs?.data?.metaDescription || ""} />
+
+
+        <link rel="canonical" href={blogs?.data?.canonicalUrl || ""}/>
+        <meta
+          name="keywords"
+          content="travel, tours, vacations, pilgrimage, holiday packages, travel deals"
+        />
+        <meta
+          property="og:title"
+          content={blogs?.data?.openGraph?.title || ""}
+        />
+        <meta
+          property="og:description"
+          content={blogs?.data?.openGraph?.description || ""}
+        />
+
+        <meta property="og:url" content={blogs?.data?.openGraph?.url || ""} />
+        <meta property="og:type" content={blogs?.data?.openGraph?.type || ""}  />
+
+        <meta
+          name="twitter:title"
+          content={blogs?.data?.twitter?.title || ""}
+        />
+        <meta
+          name="twitter:description"
+          content={blogs?.data?.twitter?.description || ""} /> 
       </Head>
 
       {/* Blog Content */}

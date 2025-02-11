@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import styles from "./about.module.css";
-
+import Head from "next/head"; 
 export default function AboutUs() {
 
   const handleScrollParallax = () => {
@@ -19,6 +19,51 @@ export default function AboutUs() {
   }, []);
  
   return (
+    <>
+    <Head>
+      {/* Meta Tags for SEO */}
+      <title>About Us - Devsthan Expert Travel Pvt. Ltd.</title>
+      <meta
+        name="description"
+        content="Learn about Devsthan Expert Travel Pvt. Ltd., your trusted partner for religious tours, hotel bookings, and cab services across Uttarakhand. Explore our vision and mission."
+      />
+      <meta
+        name="keywords"
+        content="Devsthan, religious tours, Uttarakhand travel, hotel bookings, cab services, spiritual travel, pilgrimage"
+      />
+
+      {/* Canonical URL */}
+      <link rel="canonical" href="https://yourwebsite.com/about-us" />
+
+      {/* Robots Tag */}
+      <meta name="robots" content="index, follow" />
+
+      {/* Open Graph Meta Tags for Social Sharing */}
+      <meta property="og:title" content="About Us - Devsthan Expert Travel Pvt. Ltd." />
+      <meta
+        property="og:description"
+        content="Discover Devsthan Expert Travel Pvt. Ltd., offering seamless religious travel services. Explore our mission to make your spiritual journeys memorable."
+      />
+      <meta
+        property="og:image"
+        content="https://res.cloudinary.com/dmyzudtut/image/upload/v1735376268/images/uxs5pgmanov5vyntgom4.webp"
+      />
+      <meta property="og:url" content="https://yourwebsite.com/about-us" />
+      <meta property="og:type" content="website" />
+
+      {/* Twitter Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="About Us - Devsthan Expert Travel Pvt. Ltd." />
+      <meta
+        name="twitter:description"
+        content="Explore the vision and mission of Devsthan Expert Travel Pvt. Ltd., a trusted name in religious tours and personalized travel solutions."
+      />
+      <meta
+        name="twitter:image"
+        content="https://res.cloudinary.com/dmyzudtut/image/upload/v1735376268/images/uxs5pgmanov5vyntgom4.webp"
+      />
+    </Head>
+
     <section className={styles.aboutUs}>
       {/* Header Image */}
       <div className={styles["parallax-container"]}>
@@ -39,7 +84,7 @@ export default function AboutUs() {
           <div className={styles.visionMission}>
            <div>
             <div>
-            <h2 className={styles.heading}>About Us</h2>
+            <h1 className={styles.heading}>About Us</h1>
              <p className={styles.description}>
             Welcome to Devsthan Expert Travel Pvt. Ltd., your trusted partner
             for religious tours, hotel bookings, and cab bookings across
@@ -131,6 +176,7 @@ export default function AboutUs() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 

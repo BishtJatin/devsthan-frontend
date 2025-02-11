@@ -78,6 +78,8 @@ const Destination = ({ destinationData, destinationBanner }) => {
 
   const [loading, setLoading] = useState(true); // Track loading state
   const [error, setError] = useState(null); // Track error state
+ 
+  console.log(destinationData);
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -85,7 +87,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
         setLoading(true); // Start loading
         setError(null); // Reset error on new request
         const tourData = await apiCall({
-          endpoint: `/api/tours/${destinationData.state.label}`,
+          endpoint: `/api/tours/${destinationData?.state?.label}`,
           method: "POST",
         });
         setTours(tourData);
@@ -98,7 +100,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
     };
 
     fetchTours();
-  }, [destinationData.state.label]);
+  }, [destinationData?.state?.label]);
 
   useEffect(() => {
     const updateViewport = () => {
@@ -159,18 +161,47 @@ const Destination = ({ destinationData, destinationBanner }) => {
 
   const bannerImages = getBannerImages();
 
+  // if(destinationData && destinationData.state == null){
+  //   return;
+  // }
+
   return (
     <>
 
-     <Head>
-        <title>{destinationData?.metaTitle || 'Destination'}</title>
+<Head>
+    <title>{destinationData?.metaTitle || 'Devsthan Expert - Destination'}</title>
+    <meta
+      name="description"
+      content={
+        destinationData?.metaDescription ||
+        'Explore sacred destinations and spiritual journeys with Devsthan Expert.'
+      }
+    />
+     <link rel="canonical" href="https://www.example.com/" />
         <meta
-          name="description"
-          content={destinationData?.metaDescription  || ''}
+          name="keywords"
+          content="travel, tours, vacations, pilgrimage, holiday packages, travel deals"
         />
-        
-      </Head>
+        <meta
+          property="og:title"
+          content={destinationData?.openGraph?.title || ""}
+        />
+        <meta
+          property="og:description"
+          content={destinationData?.openGraph?.description || ""}
+        />
 
+        <meta property="og:url" content={destinationData?.openGraph?.url || ""} />
+        <meta property="og:type" content={destinationData?.openGraph?.type || ""}  />
+
+        <meta
+          name="twitter:title"
+          content={destinationData?.twitter?.title || ""}
+        />
+        <meta
+          name="twitter:description"
+          content={destinationData?.twitter?.description || ""}/>
+</Head>
       <header className={styles.header}>
         <div className={styles["parallax-container"]}>
           <img
@@ -186,7 +217,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
       </header>
       <div className={styles.container}>
         <section className={styles.mainContent}>
-          <h1>Welcome To {destinationData.state.label}</h1>
+          <h1>Welcome To {destinationData.location}</h1>
           <p>
             {isExpanded
               ? destinationData.description
@@ -197,7 +228,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
           </p>
 
           <div className={styles.imageGrid}>
-            {destinationData.images.slice(0, 4).map((img, index) => (
+            {destinationData?.images.slice(0, 4)?.map((img, index) => (
               <div key={index} className={styles.imageCard}>
                 <img
                   src={`${img}`}
@@ -210,7 +241,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
 
           <div className={styles["carousel-container"]}>
             <SubDestinationCarousel {...settings}>
-              {destinationData.subDestinations.map((dest, index) => (
+              {destinationData?.subDestinations?.map((dest, index) => (
                 <div key={index} className={styles["carousel-item"]}>
                   <h2>{dest.name}</h2>
                   <p>
@@ -222,7 +253,7 @@ const Destination = ({ destinationData, destinationBanner }) => {
                     </button>
                   </p>
                   <div className={styles["image-grid"]}>
-                    {dest.photos.slice(0, 4).map((photo, photoIndex) => (
+                    {dest.photos.slice(0, 4)?.map((photo, photoIndex) => (
                       <img
                         key={photoIndex}
                         src={photo}
@@ -271,8 +302,8 @@ const Destination = ({ destinationData, destinationBanner }) => {
           autoPlay={false}
           autoPlaySpeed={3000}
         >
-          {tours.map((data) => (
-            <div key={data.uuid}>
+          {tours?.map((data) => (
+            <div key={data?.uuid}>
               <TourCard
                 data={data}
                 duration={data.duration}
@@ -280,9 +311,9 @@ const Destination = ({ destinationData, destinationBanner }) => {
                 uuid={data.uuid}
                 imageUrl={data.bannerImage}
                 title={data.name}
-                startingPrice={`Rs.${
-                  data.standardDetails.pricing[0]?.price || "N/A"
-                }`}
+                // startingPrice={`Rs.${
+                //   data?.standardDetails?.pricing[0]?.price || "N/A"
+                // }`}
               />
             </div>
           ))}

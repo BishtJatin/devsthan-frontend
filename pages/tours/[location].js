@@ -5,7 +5,7 @@ import ToursList from "../../components/toursList/toursList";
 import { BASE_URL } from "../../utils/headers";
 import { useRouter } from "next/router";
 import Slider from "rc-slider";
-
+import Head from "next/head";
 import "rc-slider/assets/index.css";
 import { RxCross2 } from "react-icons/rx";
 import { IoFilter } from "react-icons/io5";
@@ -31,6 +31,10 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
     locations.destinations
   );
   const router = useRouter();
+
+  const { query } = router;
+  
+  console.log( query );
 
   const toggleDialog = () => {
     setIsDialogOpen(!isDialogOpen);
@@ -120,8 +124,8 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            location: location,
             tourType: checkedCategories,
+            fixedTour: query.tourType === 'fixedTour' ? true : false,
             minPrice,
             maxPrice,
             durations: checkedDuration,
@@ -141,6 +145,37 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
     fetchToursByCategories();
   }, [checkedCategories, checkedDuration, minPrice, maxPrice, location]);
   return (
+    <>
+    <Head>
+      {/* Meta Tags for SEO */}
+      <title>Explore Special Tours | Find Your Perfect Adventure</title>
+      <meta
+        name="description"
+        content="Discover amazing tour packages tailored to your preferences. Filter by price, category, and duration to find the perfect adventure."
+      />
+      <meta name="keywords" content="tours, travel, vacations, adventure, holiday packages" />
+      <meta name="author" content="Your Company Name" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      {/* Open Graph Meta Tags for Social Sharing */}
+      <meta property="og:title" content="Special Tours | Find Your Perfect Adventure" />
+      <meta
+        property="og:description"
+        content="Explore a wide range of tours and packages designed for unforgettable experiences."
+      />
+      <meta property="og:image" content="/path-to-your-thumbnail-image.jpg" />
+      <meta property="og:url" content="https://yourwebsite.com/tours" />
+      <meta property="og:type" content="website" />
+
+      {/* Twitter Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Special Tours | Find Your Perfect Adventure" />
+      <meta
+        name="twitter:description"
+        content="Explore amazing tour packages and find your next adventure."
+      />
+      <meta name="twitter:image" content="/path-to-your-thumbnail-image.jpg" />
+    </Head>
     <div className={styles["tour-main"]}>
       <header className={styles.header}>
         {/* <h1 className={styles.title}>Tours </h1>
@@ -148,7 +183,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
       </header>
 
       <div className={styles["header-text"]}>
-        <p className={styles["header-text-subtitle"]}> Special Tours for You</p>
+        <h1 className={styles["header-text-subtitle"]}> Special Tours for You</h1>
 
         <h2 className={styles["header-text-title"]}>Pick Your Special Tour</h2>
       </div>
@@ -388,6 +423,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
         ) : null}
       </div>
     </div>
+    </>
   );
 };
 

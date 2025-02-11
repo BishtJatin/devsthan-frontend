@@ -13,6 +13,7 @@ import { MdOutlineKeyboardArrowDown, MdOutlineArrowForwardIos, MdOutlineArrowBac
 import TourSearch from '../searchbar-components/tour-search';
 import Search from '../search/search'
 
+
 const BannerInner = styled(Slider)`
   height: 100% !important;
   border-radius: 30px;
@@ -104,6 +105,8 @@ const HomeBanner = ({ locations, homebanner }) => {
 
   const bannerImages = getBannerImages();
   return (
+    <>
+    
     <div className={styles['home-banner']}>
     <div className={styles['banner-outer']}>
     <div className={styles['home-bannerr']}>
@@ -158,6 +161,7 @@ const HomeBanner = ({ locations, homebanner }) => {
       <TourSearch locations={locations} />
     </div>
   </div>
+  </>
   );
 };
 

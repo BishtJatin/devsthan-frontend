@@ -200,9 +200,45 @@
 }
 
 .active-button {
-  background-color: #4caf50;
-  color: white;
-  border-color: #4caf50;
+  border-color: green;
+  box-shadow: 0 0 8px rgba(0, 128, 0, 0.5);
+}
+
+.inactive-button {
+  animation: border-animation 3.5s infinite;
+}
+
+.active-select {
+  border-color: green;
+  box-shadow: 0 0 8px rgba(0, 128, 0, 0.5);
+}
+
+.inactive-select {
+  animation: border-animation 1.5s infinite;
+}
+
+@keyframes border-animation {
+  0% {
+    border-color: red;
+  }
+  50% {
+    border-color: orange;
+  }
+  100% {
+    border-color: red;
+  }
+}
+
+@keyframes border-animation {
+  0% {
+    border-color: red;
+  }
+  50% {
+    border-color: orange;
+  }
+  100% {
+    border-color: red;
+  }
 }
 
 
@@ -265,6 +301,16 @@
   padding-bottom: 40px;
 
 }
+
+.custom-arrow {
+  background: transparent; /* Remove any background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 10px; /* Adjust the padding to fit your design */
+}
+
 
 .tour-details-snapsots-single {
   width: 100%;
@@ -727,6 +773,8 @@
 
 .header {
   margin-bottom: 20px;
+  margin-left: 50px;
+  margin-top: 20px;
   position: sticky;
 }
 
@@ -1309,23 +1357,29 @@ margin-bottom: 10px;
   border-radius: 8px;
 }
 
-.seasonsCard-it{
+.seasonsCard-item-heading{
   display: flex;
-  gap: 40px;
-  margin-top: 10px;
 }
+
+.seasonsCard-it {
+  display: flex;
+  margin-top: 10px;
+  gap: 38px; /* Equal spacing between items */
+  align-items: center; /* Distributes items evenly */
+}
+
 
 .seasonsCard-its{
   display: flex;
   font-size: 14px;
-  gap: 40px;
+  gap: 50px;
   margin-top: 10px;
   
 }
 
-.seasonsCard-date{
-  display: flex;
-  flex-direction: column;
+.seasonsCard-date {
+  flex: 1; /* Ensures both <p> tags take equal space */
+  text-align: left; /* Aligns text inside <p> */
 }
 
 

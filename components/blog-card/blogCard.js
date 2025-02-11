@@ -42,14 +42,7 @@ export default function BlogCard({ blogs }) {
                         })}
                     </span>
                 </div>
-                {isClient && (
-                    <p
-                        className={styles['blog-card-description']}
-                        dangerouslySetInnerHTML={{
-                            __html: blogs.description && blogs.description
-                        }}
-                    />
-                )}
+                
                 <Link href={`/blog/${blogs.uuid}`} passHref>
                     <p className={styles['read-more']}>Read More</p>
                 </Link>

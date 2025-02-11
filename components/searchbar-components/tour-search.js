@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Head from "next/head";
 import styles from "../../components/homeBanner/homeBanner.module.css";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
@@ -73,6 +73,44 @@ const TourSearch = ({ locations }) => {
   };
 
   return (
+    <>
+      <Head>
+        <title>Plan Your Tour - Search and Explore</title>
+        <meta
+          name="description"
+          content="Plan your dream tour with ease. Choose your destination, select a departure date, and explore our amazing tour options."
+        />
+        <meta
+          name="keywords"
+          content="tours, travel, destinations, departure date, search"
+        />
+        <link rel="canonical" href="https://yourwebsite.com/tour-search" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Plan Your Tour - Search and Explore" />
+        <meta
+          property="og:description"
+          content="Plan your dream tour with ease. Choose your destination, select a departure date, and explore our amazing tour options."
+        />
+        <meta property="og:url" content="https://yourwebsite.com/tour-search" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://yourwebsite.com/path-to-image.jpg"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Plan Your Tour - Search and Explore"
+        />
+        <meta
+          name="twitter:description"
+          content="Plan your dream tour with ease. Choose your destination, select a departure date, and explore our amazing tour options."
+        />
+        <meta
+          name="twitter:image"
+          content="https://yourwebsite.com/path-to-image.jpg"
+        />
+      </Head>
     <div className={styles["search-options-outer"]}>
       <div className={styles["search-options"]}>
         {/* Destination Input */}
@@ -149,6 +187,7 @@ const TourSearch = ({ locations }) => {
 
       <ToastContainer style={{ marginTop: 80 }} />
     </div>
+    </>
   );
 };
 

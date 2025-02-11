@@ -10,7 +10,7 @@ const destinationCard = ({ destination }) => {
                 <span className={styles.tourBadge}>{destination.tours.length} Tour</span>
                 <div className={styles.textContainer}>
                     <span>Travel To</span>
-                    <h3>{destination.state.label}</h3>
+                    <h3>{destination.location}</h3>
                 </div>
 
             </div>

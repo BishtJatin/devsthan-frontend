@@ -4,6 +4,15 @@ import "react-multi-carousel/lib/styles.css";
 import styles from "../../components/itinery/itinery.module.css";
 import Image from "next/image";
 
+import styled from "styled-components";
+
+const BannerInner = styled(Carousel)`
+  .react-multiple-carousel__arrow{
+    background : transparent;
+  }
+
+  `;
+
 const ItineraryDetails = ({ itinerary }) => {
   const { hotel, meals } = itinerary || {};
   const { breakfast, lunch, dinner } = meals || {};
@@ -18,7 +27,7 @@ const ItineraryDetails = ({ itinerary }) => {
 
   const renderCarousel = (images, altPrefix) =>
     images.length > 0 ? (
-      <Carousel
+      <BannerInner
         responsive={responsive}
         infinite
         autoPlay={images.length > 1}
@@ -30,7 +39,7 @@ const ItineraryDetails = ({ itinerary }) => {
             <Image src={image} alt={`${altPrefix} Image ${idx + 1}`} width={300} height={300} />
           </div>
         ))}
-      </Carousel>
+      </BannerInner>
     ) : (
       <p>No images available</p>
     );
@@ -52,7 +61,7 @@ const ItineraryDetails = ({ itinerary }) => {
     <div className={styles["day-details-Outer"]}>
       <div className={styles["day-details-heading"]}>
         <div className={styles["day-details-inner"]}>
-          <p>Day {itinerary.day}</p>
+          <p className={styles["day-details-dayheading"]}>Day {itinerary.day}</p>
           <p>{itinerary.title}</p>
         </div>
       </div>

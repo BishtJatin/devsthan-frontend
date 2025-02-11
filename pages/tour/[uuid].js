@@ -1,7 +1,7 @@
 // This should be in a file like pages/tour/[uuid].js
 
-import React, { useEffect, useState ,useRef} from "react";
-import Head from 'next/head'; // Import Head for meta tags
+import React, { useEffect, useState, useRef } from "react";
+import Head from "next/head"; // Import Head for meta tags
 
 import TourGallery from "../../components/tourPageComponents/tourGallery";
 import TourDetails from "../../components/tourPageComponents/tourDetails";
@@ -14,18 +14,19 @@ import Loader from "../../components/loader/loader";
 
 import { PiArrowBendLeftDownBold } from "react-icons/pi";
 
-
 const TourPage = ({ tourAllData }) => {
   const [selectedCategory, setSelectedCategory] = useState("standardDetails");
   const [activeTab, setActiveTab] = useState("Itinerary");
-  
-console.log(tourAllData);
+
+  console.log(tourAllData);
 
   const [showTooltip, setShowTooltip] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
   const [showDateTooltip, setShowDateTooltip] = useState(false);
   const [lastScrollPos, setLastScrollPos] = useState(0);
   const tabsRef = useRef(null);
+  const [isClicked, setIsClicked] = useState(false);
+
 
   const itineraryRef = useRef(null);
   const policiesRef = useRef(null);
@@ -70,7 +71,6 @@ console.log(tourAllData);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-   
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -98,7 +98,7 @@ console.log(tourAllData);
     e.preventDefault();
     try {
       setLoadingSubmit(true);
-      
+
       // API request to submit inquiry
       const createInquiry = await apiCall({
         endpoint: "/api/createInquiry", // Replace with your API endpoint
@@ -133,52 +133,47 @@ console.log(tourAllData);
       [name]: value,
     }));
   };
- 
 
   const handleTooltipDone = () => {
-  setShowTooltip(false); 
-  setShowDateTooltip(true);
-  // Hide the first tooltip
-  // dateSectionRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the date section
-};
+    setShowTooltip(false);
+    setShowDateTooltip(true);
+    // Hide the first tooltip
+    // dateSectionRef.current?.scrollIntoView({ behavior: "smooth" }); // Scroll to the date section
+  };
 
-// Scroll to the tooltip on load with offset
-useEffect(() => {
-  if (showTooltip && tooltipRef.current) {
-    const tooltipElement = tooltipRef.current;
-    const elementPosition = tooltipElement.getBoundingClientRect().top + window.pageYOffset;
-    const offset = 80; // Adjust this value for the desired space at the top
+  // Scroll to the tooltip on load with offset
+  useEffect(() => {
+    if (showTooltip && tooltipRef.current) {
+      const tooltipElement = tooltipRef.current;
+      const elementPosition =
+        tooltipElement.getBoundingClientRect().top + window.pageYOffset;
+      const offset = 80; // Adjust this value for the desired space at the top
 
-    window.scrollTo({
-      top: elementPosition - offset,
-      behavior: "smooth",
-    });
-  }
-}, [showTooltip]);
-
-// Close tooltip when clicking outside or on Done
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
-      setShowTooltip(false);
-      setShowDateTooltip(true);
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
     }
+  }, [showTooltip]);
+
+  // Close tooltip when clicking outside or on Done
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setShowTooltip(false);
+        setShowDateTooltip(true);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleDateTooltipDone = () => {
+    setShowDateTooltip(false);
   };
-
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
-
-
-
-
-
-const handleDateTooltipDone = () => {
-  setShowDateTooltip(false);
-};
-
 
   useEffect(() => {
     let targetElement;
@@ -209,29 +204,55 @@ const handleDateTooltipDone = () => {
     }
   }, [activeTab]); // Runs this effect whenever activeTab changes
 
-
   const categoryDetails =
-  selectedCategory === "standardDetails"
-    ? tourAllData[0].standardDetails
-    : selectedCategory === "deluxeDetails"
-    ? tourAllData[0].deluxeDetails
-    : selectedCategory === "premiumDetails"
-    ? tourAllData[0].premiumDetails
-    : null;
-
+    selectedCategory === "standardDetails"
+      ? tourAllData[0].standardDetails
+      : selectedCategory === "deluxeDetails"
+      ? tourAllData[0].deluxeDetails
+      : selectedCategory === "premiumDetails"
+      ? tourAllData[0].premiumDetails
+      : null;
 
   return (
-
     <>
-    <Head>
-        <title>{tourAllData[0]?.metaTitle || 'Tour'}</title>
+      <Head>
+        <title>{tourAllData[0]?.metaTitle || "Tour"}</title>
         <meta
           name="description"
-          content={tourAllData[0]?.metaDescription  || ''}
+          content={tourAllData[0]?.metaDescription || ""}
         />
-        
+        <link rel="canonical" href="https://www.example.com/" />
+        <meta
+          name="keywords"
+          content="travel, tours, vacations, pilgrimage, holiday packages, travel deals"
+        />
+        <meta
+          property="og:title"
+          content={tourAllData[0]?.openGraph?.title || ""}
+        />
+        <meta
+          property="og:description"
+          content={tourAllData[0]?.openGraph?.description || ""}
+        />
+
+        <meta
+          property="og:url"
+          content={tourAllData[0]?.openGraph?.url || ""}
+        />
+        <meta
+          property="og:type"
+          content={tourAllData[0]?.openGraph?.type || ""}
+        />
+
+        <meta
+          name="twitter:title"
+          content={tourAllData[0]?.twitter?.title || ""}
+        />
+        <meta
+          name="twitter:description"
+          content={tourAllData[0]?.twitter?.description || ""}
+        />
       </Head>
-      <div className={styles["tour-main"]}>
       <div className={styles["gallery"]}>
         <TourGallery
           duration={tourAllData[0].duration}
@@ -243,304 +264,328 @@ const handleDateTooltipDone = () => {
           location={tourAllData[0].location}
         />
       </div>
-
-
-      { isSmallScreen == false &&   <div
-        className={`${styles["tabs"]} ${isSticky ? styles["sticky"] : ""}`}
-        ref={tabsRef}
-      >
-
-        <button
-          className={activeTab === "Itinerary" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Itinerary")}
-        >
-          Itinerary
-        </button>
-        <button
-          className={activeTab === "Policies" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Policies")}
-        >
-          Policies
-        </button>
-        <button
-          className={activeTab === "Summary" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Summary")}
-        >
-          Summary
-        </button>
-
-        <div className={styles["category-selector"]}>
-        {showTooltip && (
-      <div className={styles["tooltip-overlay"]} ref={tooltipRef}>
-        <div className={styles["tooltip"]}>
-          <p>Select the package</p>
-          <button
-            className={styles["button-done"]}
-            onClick={handleTooltipDone}
+      <div className={styles["tour-main"]}>
+        {isSmallScreen == false && (
+          <div
+            className={`${styles["tabs"]} ${isSticky ? styles["sticky"] : ""}`}
+            ref={tabsRef}
           >
-            Done
-          </button>
-        </div>
-        <div  className={styles["arrow"]}><PiArrowBendLeftDownBold /></div>
-      </div>
-    )}
-          <select
-            id="category-select"
-            value={selectedCategory}
-            className={styles["category-dropdown"]}
-            onChange={(e) => setSelectedCategory(e.target.value)} 
-          >
-            {tourAllData[0].isStandard === true && (
-              <option value="standardDetails">Standard</option>
-            )}
-            {tourAllData[0].isDeluxe === true && (
-              <option value="deluxeDetails">Deluxe</option>
-            )}
-            {tourAllData[0].isPremium === true && (
-              <option value="premiumDetails">Premium</option>
-            )}
-          </select>
+            <button
+              className={activeTab === "Itinerary" ? styles["tab-active"] : ""}
+              onClick={() => handleTabChange("Itinerary")}
+            >
+              Itinerary
+            </button>
+            <button
+              className={activeTab === "Policies" ? styles["tab-active"] : ""}
+              onClick={() => handleTabChange("Policies")}
+            >
+              Policies
+            </button>
+            <button
+              className={activeTab === "Summary" ? styles["tab-active"] : ""}
+              onClick={() => handleTabChange("Summary")}
+            >
+              Summary
+            </button>
 
-        </div>
-      </div>}
-
-      {/* Tab Content */}
-      <div className={styles["tab-panel"]}>
-      
-        <div className={styles["tab-content"]}>
-        { isSmallScreen && <div
-        className={`${styles["tabs"]} ${isSticky ? styles["sticky"] : ""}`}
-        ref={tabsRef}
-      >
-
-        <button
-          className={activeTab === "Itinerary" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Itinerary")}
-        >
-          Itinerary
-        </button>
-        <button
-          className={activeTab === "Policies" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Policies")}
-        >
-          Policies
-        </button>
-        <button
-          className={activeTab === "Summary" ? styles["tab-active"] : ""}
-          onClick={() => handleTabChange("Summary")}
-        >
-          Summary
-        </button>
-
-        <div className={styles["category-selector"]}>
-        {showTooltip && (
-      <div className={styles["tooltip-overlay"]} ref={tooltipRef}>
-        <div className={styles["tooltip"]}>
-          <p>Select the package</p>
-          <button
-            className={styles["button-done"]}
-            onClick={handleTooltipDone}
-          >
-            Done
-          </button>
-        </div>
-        <div  className={styles["arrow"]}><PiArrowBendLeftDownBold /></div>
-      </div>
-    )}
-          <select
-            id="category-select"
-            value={selectedCategory}
-            className={styles["category-dropdown"]}
-            onChange={(e) => setSelectedCategory(e.target.value)} 
-          >
-            {tourAllData[0].isStandard === true && (
-              <option value="standardDetails">Standard</option>
-            )}
-            {tourAllData[0].isDeluxe === true && (
-              <option value="deluxeDetails">Deluxe</option>
-            )}
-            {tourAllData[0].isPremium === true && (
-              <option value="premiumDetails">Premium</option>
-            )}
-          </select>
-
-        </div>
-      </div>}
-          {activeTab === "Itinerary" && (
-
-            <div ref={itineraryRef}>
-              <Itinerary
-                categoryDetails={categoryDetails.itineraries}
-                tourAllData={tourAllData && tourAllData}
-                showDateTooltip={showDateTooltip}
-                handleDateTooltipDone={handleDateTooltipDone}
-              />
-            </div>
-          )}
-
-{activeTab === "Policies" && (
-  <div ref={policiesRef} className={styles["policies"]}>
-
-    <h2>Cancellation Policies</h2>
-    <p
-      style={{ paddingLeft: "18px", paddingRight: "18px" }}
-      dangerouslySetInnerHTML={{
-        __html: categoryDetails.cancellationPolicy && categoryDetails.cancellationPolicy,
-      }}
-    ></p>
-
-    <h2>Know before you go</h2>
-
-    <div>
-      {Array.isArray(tourAllData[0].knowBeforeYouGo) ? (
-        tourAllData[0].knowBeforeYouGo.map((text, index) => (
-          <p
-            key={index}
-            dangerouslySetInnerHTML={{
-              __html: text,
-            }}
-          ></p>
-        ))
-      ) : (
-        <p
-          dangerouslySetInnerHTML={{
-            __html: tourAllData[0].knowBeforeYouGo || "No information available.",
-          }}
-        ></p>
-      )}
-    </div>
-  </div>
-)}
-
-
-          {activeTab === "Summary" && (
-
-            <div ref={summaryRef} className={styles["summary"]}>
-              <h2>Highlights</h2>
-              {Array.isArray(categoryDetails?.highlights) ? (
-                <ol className={styles["highlights"]}>
-                  {categoryDetails.highlights.map((text, index) => (
-                    <li
-                      key={index}
-                      dangerouslySetInnerHTML={{ __html: text }}
-                    />
-                  ))}
-                </ol>
-              ) : (
-                <p>No highlights available.</p>
-              )}
-
-
-              <div className={styles["details-container"]}>
-                <div className={styles["inclusions"]}>
-                  <h2>Inclusions</h2>
-
-                  {Array.isArray(categoryDetails?.whatsIncluded) ? (
-                    <ol>
-                      {categoryDetails.whatsIncluded.map((text, index) => (
-                        <li
-                          key={index}
-                          dangerouslySetInnerHTML={{ __html: text }}
-                        />
-                      ))}
-                    </ol>
-                  ) : (
-                    <p>No inclusions available.</p>
-                  )}
+            <div className={styles["category-selector"]}>
+              {showTooltip && (
+                <div className={styles["tooltip-overlay"]} ref={tooltipRef}>
+                  <div className={styles["tooltip"]}>
+                    <p>Select the package</p>
+                    <button
+                      className={styles["button-done"]}
+                      onClick={handleTooltipDone}
+                    >
+                      Done
+                    </button>
+                  </div>
+                  <div className={styles["arrow"]}>
+                    <PiArrowBendLeftDownBold />
+                  </div>
                 </div>
-                <div className={styles["exclusions"]}>
-                  <h2>Exclusions</h2>
-                  {Array.isArray(categoryDetails?.whatsExcluded) ? (
-                    <ol>
-                      {categoryDetails.whatsExcluded.map((text, index) => (
-                        <li
-                          key={index}
-                          dangerouslySetInnerHTML={{ __html: text }}
-                        />
-                      ))}
-                    </ol>
-                  ) : (
-                    <p>No exclusions available.</p>
-                  )}
+              )}
+              <select
+                id="category-select"
+                value={selectedCategory}
+                className={`${styles["category-dropdown"]} ${
+                  !isClicked && selectedCategory === ""
+                    ? styles["inactive-select"]
+                    : styles["active-select"]
+                }`}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setIsClicked(true); // Stop animation when the user interacts
+                }}
+                onClick={() => setIsClicked(true)} // Stop animation on click
+              >
+                {tourAllData[0].isStandard === true && (
+                  <option value="standardDetails">Standard</option>
+                )}
+                {tourAllData[0].isDeluxe === true && (
+                  <option value="deluxeDetails">Deluxe</option>
+                )}
+                {tourAllData[0].isPremium === true && (
+                  <option value="premiumDetails">Premium</option>
+                )}
+              </select>
+            </div>
+          </div>
+        )}
 
+        {/* Tab Content */}
+        <div className={styles["tab-panel"]}>
+          <div className={styles["tab-content"]}>
+            {isSmallScreen && (
+              <div
+                className={`${styles["tabs"]} ${
+                  isSticky ? styles["sticky"] : ""
+                }`}
+                ref={tabsRef}
+              >
+                <button
+                  className={
+                    activeTab === "Itinerary" ? styles["tab-active"] : ""
+                  }
+                  onClick={() => handleTabChange("Itinerary")}
+                >
+                  Itinerary
+                </button>
+                <button
+                  className={
+                    activeTab === "Policies" ? styles["tab-active"] : ""
+                  }
+                  onClick={() => handleTabChange("Policies")}
+                >
+                  Policies
+                </button>
+                <button
+                  className={
+                    activeTab === "Summary" ? styles["tab-active"] : ""
+                  }
+                  onClick={() => handleTabChange("Summary")}
+                >
+                  Summary
+                </button>
+
+                <div className={styles["category-selector"]}>
+                  {showTooltip && (
+                    <div className={styles["tooltip-overlay"]} ref={tooltipRef}>
+                      <div className={styles["tooltip"]}>
+                        <p>Select the package</p>
+                        <button
+                          className={styles["button-done"]}
+                          onClick={handleTooltipDone}
+                        >
+                          Done
+                        </button>
+                      </div>
+                      <div className={styles["arrow"]}>
+                        <PiArrowBendLeftDownBold />
+                      </div>
+                    </div>
+                  )}
+                  <select
+                    id="category-select"
+                    value={selectedCategory}
+                    className={`${styles["category-dropdown"]} ${
+                      !isClicked && selectedCategory === ""
+                        ? styles["inactive-select"]
+                        : styles["active-select"]
+                    }`}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                      setIsClicked(true); // Stop animation when the user interacts
+                    }}
+                    onClick={() => setIsClicked(true)} // Stop animation on click
+                  >
+                    {tourAllData[0].isStandard === true && (
+                      <option value="standardDetails">Standard</option>
+                    )}
+                    {tourAllData[0].isDeluxe === true && (
+                      <option value="deluxeDetails">Deluxe</option>
+                    )}
+                    {tourAllData[0].isPremium === true && (
+                      <option value="premiumDetails">Premium</option>
+                    )}
+                  </select>
                 </div>
               </div>
-            </div>
-          )}
-           { isSmallScreen && <div className={styles["tour-booking-panel"]}>
-      <p className={styles["panel-heading"]}>Book Your Tour</p>
-      <p className={styles["panel-des"]}>
-        Reserve your ideal trip early for a hassle-free trip; secure comfort and convenience!
-      </p>
-      <form className={styles.inquiryForm} onSubmit={handleSubmit}>
-        <label>Full Name</label>
-        <input
-          type="text"
-          name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          minLength="2"
-          required
-        />
+            )}
+            {activeTab === "Itinerary" && (
+              <div ref={itineraryRef}>
+                <Itinerary
+                  categoryDetails={categoryDetails.itineraries}
+                  tourAllData={tourAllData && tourAllData}
+                  showDateTooltip={showDateTooltip}
+                  handleDateTooltipDone={handleDateTooltipDone}
+                />
+              </div>
+            )}
 
-        <label>Phone</label>
-        <input
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          pattern="\d{10}"
-          title="Phone must be a 10-digit number"
-        />
+            {activeTab === "Policies" && (
+              <div ref={policiesRef} className={styles["policies"]}>
+                <h2>Cancellation Policies</h2>
+                <p
+                  style={{ paddingLeft: "18px", paddingRight: "18px" }}
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      categoryDetails.cancellationPolicy &&
+                      categoryDetails.cancellationPolicy,
+                  }}
+                ></p>
 
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+                <h2>Know before you go</h2>
 
-        <label>Message</label>
-        <input
-          type="text"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          required
-        />
-        
-        {loadingSubmit ? (
-          <Loader /> // Displaying the loader component while submitting
-        ) : (
-          <button type="submit">Submit</button>
-        )}
-      </form>
-    </div>}
+                <div>
+                  {Array.isArray(tourAllData[0].knowBeforeYouGo) ? (
+                    tourAllData[0].knowBeforeYouGo.map((text, index) => (
+                      <p
+                        key={index}
+                        dangerouslySetInnerHTML={{
+                          __html: text,
+                        }}
+                      ></p>
+                    ))
+                  ) : (
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          tourAllData[0].knowBeforeYouGo ||
+                          "No information available.",
+                      }}
+                    ></p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeTab === "Summary" && (
+              <div ref={summaryRef} className={styles["summary"]}>
+                <h2>Highlights</h2>
+                {Array.isArray(categoryDetails?.highlights) ? (
+                  <ol className={styles["highlights"]}>
+                    {categoryDetails.highlights.map((text, index) => (
+                      <li
+                        key={index}
+                        dangerouslySetInnerHTML={{ __html: text }}
+                      />
+                    ))}
+                  </ol>
+                ) : (
+                  <p>No highlights available.</p>
+                )}
+
+                <div className={styles["details-container"]}>
+                  <div className={styles["inclusions"]}>
+                    <h2>Inclusions</h2>
+
+                    {Array.isArray(categoryDetails?.whatsIncluded) ? (
+                      <ol>
+                        {categoryDetails.whatsIncluded.map((text, index) => (
+                          <li
+                            key={index}
+                            dangerouslySetInnerHTML={{ __html: text }}
+                          />
+                        ))}
+                      </ol>
+                    ) : (
+                      <p>No inclusions available.</p>
+                    )}
+                  </div>
+                  <div className={styles["exclusions"]}>
+                    <h2>Exclusions</h2>
+                    {Array.isArray(categoryDetails?.whatsExcluded) ? (
+                      <ol>
+                        {categoryDetails.whatsExcluded.map((text, index) => (
+                          <li
+                            key={index}
+                            dangerouslySetInnerHTML={{ __html: text }}
+                          />
+                        ))}
+                      </ol>
+                    ) : (
+                      <p>No exclusions available.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            {isSmallScreen && (
+              <div className={styles["tour-booking-panel"]}>
+                <p className={styles["panel-heading"]}>Book Your Tour</p>
+                <p className={styles["panel-des"]}>
+                  Reserve your ideal trip early for a hassle-free trip; secure
+                  comfort and convenience!
+                </p>
+                <form className={styles.inquiryForm} onSubmit={handleSubmit}>
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    minLength="2"
+                    required
+                  />
+
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    pattern="\d{10}"
+                    title="Phone must be a 10-digit number"
+                  />
+
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <label>Message</label>
+                  <input
+                    type="text"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  {loadingSubmit ? (
+                    <Loader /> // Displaying the loader component while submitting
+                  ) : (
+                    <button type="submit">Submit</button>
+                  )}
+                </form>
+              </div>
+            )}
+          </div>
+
+          <TourBookingPanel
+            duration={tourAllData[0].duration}
+            category={selectedCategory}
+            state={tourAllData[0].state}
+            city={tourAllData[0].city}
+            location={tourAllData[0].location}
+            name={tourAllData[0].name}
+            availability={tourAllData.availability}
+            uuid={tourAllData[0].uuid}
+            categoryDetails={categoryDetails}
+            date={tourAllData[0].date}
+            partialPayment={tourAllData[0].partialPayment}
+            seasons={categoryDetails.seasons}
+          />
         </div>
-     
-        <TourBookingPanel
-          duration={tourAllData[0].duration}
-          category={selectedCategory}
-          state={tourAllData[0].state}
-          city={tourAllData[0].city}
-          location={tourAllData[0].location}
-          name={tourAllData[0].name}
-          availability={tourAllData.availability}
-          uuid={tourAllData[0].uuid}
-          categoryDetails={categoryDetails}
-          date={tourAllData[0].date}          
-          partialPayment={tourAllData[0].partialPayment}
-          seasons = {categoryDetails.seasons}
-        />
       </div>
-    </div>
-
     </>
-   
-
   );
 };
 
@@ -551,8 +596,8 @@ export async function getStaticPaths() {
     endpoint: "/api/allTours",
     method: "POST",
     body: {
-      fixedTour:false
-    }
+      fixedTour: false,
+    },
   });
 
   const paths = tours.map((tour) => ({

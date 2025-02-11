@@ -7,6 +7,7 @@ import VacationSpots from "../components/vacationsSpots/vacationSpots";
 import TourExperience from "../components/tourExperience/tourExperience";
 import WhyChoose from "../components/whyChoose/whyChoose";
 import Blogs from "../components/blogs/blogs";
+import Head from 'next/head';
 // import TourActivities from "../components/tourActivities/tourActivities";
 // import Testimonials from "../components/testimonials/testimonials";
 import { apiCall } from "../utils/common";
@@ -16,7 +17,22 @@ export default function Home({ tourData, destinations,locations,whyChoose,blogs,
   console.log(tourFixData);
   
   return (
-    <>
+    <> <Head>
+    <title>Travel and Explore - Home</title>
+    <meta name="description" content="Discover the best tours, hotels, buses, and flights for your next adventure." />
+    <meta name="keywords" content="tours, hotels, travel, buses, flights, explore" />
+    <link rel="canonical" href="https://yourwebsite.com/home" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Travel and Explore - Home" />
+    <meta property="og:description" content="Discover the best tours, hotels, buses, and flights for your next adventure." />
+    <meta property="og:url" content="https://yourwebsite.com/home" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://yourwebsite.com/path-to-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Travel and Explore - Home" />
+    <meta name="twitter:description" content="Discover the best tours, hotels, buses, and flights for your next adventure." />
+    <meta name="twitter:image" content="https://yourwebsite.com/path-to-image.jpg" />
+  </Head>
       <HomeBanner locations={locations} homebanner={homebanner} />
       <About />
       <VacationSpots destinations={destinations} />
