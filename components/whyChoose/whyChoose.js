@@ -63,7 +63,9 @@ margin-bottom: 8px;}
 `
 
 
-
+if (!whyChoose || whyChoose.length === 0) {
+  return <p>No data available</p>;
+}
   return (
     <section ref={sectionRef} className={styles['about-us-section']}>
        <div className={styles['header']}>
@@ -85,7 +87,7 @@ margin-bottom: 8px;}
           arrows={false}
           containerClass={styles['carousel-container']}
         >
-          {whyChoose.data.slice(0, 4).map((card) => (
+          {whyChoose?.data?.slice(0, 4).map((card) => (
             <div key={card.id} className={styles['about-card']}>
               <div className={styles['image-wrapper']}>
                 <img src={card.bannerImage} alt={card.title} />
