@@ -264,7 +264,7 @@ max-width: 100%;
   justify-content: flex-end;
   cursor: pointer;
   height: auto;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .day-item.active-day {
@@ -276,7 +276,7 @@ max-width: 100%;
   justify-content: flex-end;
   gap: 5px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 18px;
 
 }
 
@@ -457,6 +457,23 @@ max-width: 100%;
   font-size: x-large;
 }
 
+
+@keyframes borderAnimation {
+  0% {
+    background: linear-gradient(45deg, #ff6b6b, #ffde6b, #6bff92, #6b92ff) border-box;
+  }
+  50% {
+    background: linear-gradient(45deg, #6b92ff, #ff6b6b, #ffde6b, #6bff92) border-box;
+  }
+  100% {
+    background: linear-gradient(45deg, #ffde6b, #6b92ff, #ff6b6b, #6bff92) border-box;
+  }
+}
+
+
+
+
+
 @media screen and  (max-width:1400px){
   .arrow{
   
@@ -588,7 +605,7 @@ max-width: 100%;
   }
 
   .tabs button {
-    font-size: 12px !important;
+    font-size: 16px !important;
 
   }
 
@@ -694,12 +711,17 @@ max-width: 100%;
   .day-item {
     min-width: 50px;
     background-color: white;
+    flex-direction: column-reverse;
     border-radius: 8px;
-    padding: 8px;
+    padding: 0.4rem;
     text-align: center;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .day-item.active-day{
+    flex-direction: column-reverse;
   }
 
   .day-item:hover {
@@ -1066,6 +1088,7 @@ max-width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+
   
 }
 

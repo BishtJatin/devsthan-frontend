@@ -1,50 +1,97 @@
 // components/Footer.js
-import Link from 'next/link';
-import styles from '../footer/footer.module.css';
-import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
+import Link from "next/link";
+import styles from "../footer/footer.module.css";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
+import TestButton from "../testbutton/TestButton";
+import { useEffect, useState } from "react";
 
 export default function footer() {
+  
+
+  const whatsappNumber = "+918683818381"; // Replace with your WhatsApp number
+  const message = "Hello, I want to book a tour";
   return (
-    <footer className={styles['footer']}>
-      <div className={styles['footer-content']}>
-        <div className={styles['promo-section']}>
-          <h2 className={styles['promo-title']}>Want To Take Tour Packages?</h2>
-        <Link  href="/tours/uttarakhand"> <button className={styles['promo-button']}>Book A Tour</button></Link>
-        <div className={styles['social-links']}>
-      <Link href="https://www.facebook.com/DevsthanExpert/" target="_blank" rel="noopener noreferrer">
-        <FaFacebookF className={styles['social-icon']} />
-      </Link>
-      <Link href="https://www.instagram.com/devsthan_expert/" target="_blank" rel="noopener noreferrer">
-        <FaInstagram className={styles['social-icon']} />
-      </Link>
-      <Link href="https://www.youtube.com/@DevsthanExpert" target="_blank" rel="noopener noreferrer">
-        <FaYoutube className={styles['social-icon']} />
-      </Link>
-    </div>
-         
+    <footer className={styles["footer"]}>
+      <div className={styles["footer-content"]}>
+        <div className={styles["promo-section"]}>
+          <div>
+          <h2 className={styles["promo-title"]}>Want To Take Tour Packages?</h2>
+          <Link href="/tours/uttarakhand">
+            {" "}
+            <button className={styles["promo-button"]}>Book A Tour</button>
+            
+          </Link>
+          </div>
+          <div className={styles["social-links"]}>
+            <Link
+              href="https://www.facebook.com/DevsthanExpert/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebookF className={styles["social-icon"]} />
+            </Link>
+            <Link
+              href="https://www.instagram.com/devsthan_expert/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram className={styles["social-icon"]} />
+            </Link>
+            <Link
+              href="https://www.youtube.com/@DevsthanExpert"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaYoutube className={styles["social-icon"]} />
+            </Link>
+          </div>
         </div>
-        <div className={styles['footer-links']}>
-          <div className={styles['quick-links']}>
+    
+        <div className={styles["footer-links"]}>
+          <div className={styles["quick-links"]}>
             <h3>Quick Link</h3>
             <ul>
-             <Link href={'/about'} className={styles['li']}><li >About Us</li></Link> 
-             <Link href={'/destinations'} className={styles['li']}><li >Destinations</li></Link> 
-             <Link href={'/blogs'} className={styles['li']}><li >Blogs</li></Link> 
-             <Link href={'/cancellation-policy'} className={styles['li']}><li >Cancellation & Refund</li></Link> 
-             <Link href={'/terms-and-conditions'} className={styles['li']}><li >Terms & Conditions</li></Link> 
-             <Link href={'/contact'} className={styles['li']}><li >Contact Us</li></Link> 
-             
+              <Link href={"/about"} className={styles["li"]}>
+                <li>About Us</li>
+              </Link>
+              <Link href={"/destinations"} className={styles["li"]}>
+                <li>Destinations</li>
+              </Link>
+              <Link href={"/blogs"} className={styles["li"]}>
+                <li>Blogs</li>
+              </Link>
+              <Link href={"/cancellation-policy"} className={styles["li"]}>
+                <li>Cancellation & Refund</li>
+              </Link>
+              <Link href={"/terms-and-conditions"} className={styles["li"]}>
+                <li>Terms & Conditions</li>
+              </Link>
+              <Link href={"/contact"} className={styles["li"]}>
+                <li>Contact Us</li>
+              </Link>
             </ul>
           </div>
-          <div className={styles['more-inquiry']}>
+          <div className={styles["more-inquiry"]}>
             <h3>More Inquiry</h3>
             <p>+91 8683818381</p>
             <p>info@devsthanexpert.com </p>
-            <p>street-7# Gayatri Vihar, Shanti Kunj Ashram Gate-4, Bhupatwala, Haridwar - 249401</p>
+            <p>
+              street-7# Gayatri Vihar, Shanti Kunj Ashram Gate-4, Bhupatwala,
+              Haridwar - 249401
+            </p>
           </div>
-          <div className={styles['about-section']}>
+          <div className={styles["about-section"]}>
             <h3>Your Trusted Travel Partner</h3>
-            <p>From your first step to your last, we’re committed to creating moments you’ll cherish forever. Wherever your journey takes you, we’ll be here to make it extraordinary.</p>
+            <p>
+              From your first step to your last, we’re committed to creating
+              moments you’ll cherish forever. Wherever your journey takes you,
+              we’ll be here to make it extraordinary.
+            </p>
           </div>
           {/* <div className={styles['payment-partner']}>
             <h3>Payment Partner</h3>
@@ -58,12 +105,19 @@ export default function footer() {
           </div> */}
         </div>
       </div>
-      <div className={styles['footer-bottom']}>
+
+      <div className={styles["footer-bottom"]}>
         <p>©Copyright 2024 Devsthan Expert </p>
-        <div className={styles['footer-bottom-pages']}>
+        
 
-
-       <Link href={'/privacy-policy'} ><p >Privacy Policy</p></Link> •   <Link href={'/terms-and-conditions'} ><p >Terms & Condition</p></Link>
+        <div className={styles["footer-bottom-pages"]}>
+          <Link href={"/privacy-policy"}>
+            <p>Privacy Policy</p>
+          </Link>{" "}
+          •{" "}
+          <Link href={"/terms-and-conditions"}>
+            <p>Terms & Condition</p>
+          </Link>
         </div>
       </div>
     </footer>

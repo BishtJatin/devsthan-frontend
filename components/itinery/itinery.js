@@ -292,34 +292,46 @@ const Itinerary = ({
                   </div>
                 )}
 
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  dateFormat="dd/MM/yyyy"
-                  customInput={<CustomInput />}
-                  minDate={new Date()} // Disables all dates before today
-                  popperPlacement="bottom"
-                  popperProps={{
-                    modifiers: [
-                      {
-                        name: "offset",
-                        options: { offset: [0, 10] },
-                      },
-                      {
-                        name: "preventOverflow",
-                        options: { boundary: "viewport" },
-                      },
-                      {
-                        name: "zIndex",
-                        enabled: true,
-                        phase: "write",
-                        fn: ({ state }) => {
-                          state.styles.popper.zIndex = 5550; // Dynamically set z-index
+                <div
+                 style={{
+                  display: "inline-block", // Space around the DatePicker
+                  border: "3px solid transparent",
+                  borderRadius: "8px",
+                  background:
+                    "linear-gradient(white, white) padding-box, linear-gradient(45deg,  #6bff92, #6b92ff) border-box",
+                  animation: "borderAnimation 4s linear infinite",
+                }}
+                className="animated-border"
+                >
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    customInput={<CustomInput />}
+                    minDate={new Date()} // Disables all dates before today
+                    popperPlacement="bottom"
+                    popperProps={{
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: { offset: [0, 10] },
                         },
-                      },
-                    ],
-                  }}
-                />
+                        {
+                          name: "preventOverflow",
+                          options: { boundary: "viewport" },
+                        },
+                        {
+                          name: "zIndex",
+                          enabled: true,
+                          phase: "write",
+                          fn: ({ state }) => {
+                            state.styles.popper.zIndex = 5550; // Dynamically set z-index
+                          },
+                        },
+                      ],
+                    }}
+                  />
+                </div>
               </div>
               {categoryDetails.map((_, index) => {
                 const currentDate = new Date(startDate);

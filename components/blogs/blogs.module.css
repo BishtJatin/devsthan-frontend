@@ -5,7 +5,18 @@
     padding: 20px;
     max-width: 1300px;
     margin-inline: auto;
+    opacity: 0;
+    transform: translateY(10%); /* Start from below */
+    transition: opacity 1s ease-out, transform 1s ease-out; /* Smooth transition for opacity and position */
   }
+
+  
+  /* Visible state when animation triggers */
+  .blogsContainer.animate {
+    opacity: 1;
+    transform: translateY(0); /* Slide up to the original position */
+  }
+  
   .blogsHeading{
     text-align: center;
     margin-top: 20px;

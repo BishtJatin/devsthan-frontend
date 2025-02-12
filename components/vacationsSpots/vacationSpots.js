@@ -33,6 +33,27 @@ const VacationSpots = ({ destinations }) => {
     },
   };
 
+  useEffect(() => {
+    const section = document.querySelector(`.${styles['vacation-spots-section']}`);
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.animate);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
+
   return (
     <section className={styles['vacation-spots-section']}>
       <div className={styles['header']}>

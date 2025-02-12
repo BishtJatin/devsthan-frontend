@@ -27,7 +27,22 @@ function MyApp({ Component, pageProps }) {
       setWindowHeight(window.innerHeight);
     }
   }, []);
+  
 
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsSmallScreen(window.innerWidth < 1040);
+    };
+
+    checkScreenWidth(); // Check screen size on initial render
+    window.addEventListener('resize', checkScreenWidth); // Listen for screen size changes
+
+    return () => {
+      window.removeEventListener('resize', checkScreenWidth); // Cleanup on unmount
+    };
+  }, []);
 
   
 
@@ -115,6 +130,59 @@ function MyApp({ Component, pageProps }) {
           </a>
         </div>
       </Draggable>
+
+
+      {isSmallScreen && (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      position: "fixed", // Fixes it at a specific position
+      bottom: 0,         // Places it at the bottom of the screen
+      width: "100%",     // Spans the entire width of the screen
+      backgroundColor: "#edf2de", // Optional background color
+      boxShadow: "0 -2px 5px rgba(0,0,0,0.1)", // Optional shadow
+      zIndex: 1000,      // Ensures it stays on top of other content
+      padding: "10px 0", // Adds some vertical padding
+    }}
+  >
+    {/* WhatsApp Button */}
+    <a
+      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
+      className="footer-quickbuttons1"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        backgroundColor: "#25D366",
+        color: "white",
+        padding: "6px 60px",
+        paddingTop:"12px",
+        fontSize: "20px",
+        marginRight: "10px", // Adds spacing between buttons
+        borderRadius: "5px", // Optional rounded corners
+      }}
+    >
+      <FaWhatsapp />
+    </a>
+
+    {/* TestButton */}
+    <a
+      className="footer-quickbuttons2"
+      style={{
+        backgroundColor: "#213f98",
+        color: "white",
+        padding: "6px 60px",
+        paddingTop:"12px",
+        fontSize: "20px",
+        borderRadius: "5px", // Optional rounded corners
+      }}
+    >
+      <TestButton />
+    </a>
+  </div>
+)}
+
 
     </>
   );

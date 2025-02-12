@@ -1,11 +1,22 @@
 
 
 .vacation-spots-section {
-    padding: 40px;
-    text-align: center;
-    max-width: 1340px;
-    margin-inline: auto;
-  }
+  padding: 40px;
+  text-align: center;
+  max-width: 1340px;
+  margin-inline: auto;
+  opacity: 0;
+  transform: translateX(-50%); /* Start from the right */
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Separate transition for opacity and position */
+}
+
+/* Visible state when animation triggers */
+.vacation-spots-section.animate {
+  opacity: 1;
+  transform: translateX(0); /* Move to the original position (to the left) */
+}
+
+
   
   .header {
     margin-bottom: 20px;

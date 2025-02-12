@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../whyChoose/whyChoose.module.css';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -9,7 +9,7 @@ import styled from 'styled-components';
 const WhyChoose = ({ whyChoose }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-   
+  const sectionRef = useRef(null);
   
 
   useEffect(() => {
@@ -25,6 +25,28 @@ const WhyChoose = ({ whyChoose }) => {
 
     // Cleanup event listener on unmount
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.animate);
+          }
+        });
+      },
+      { threshold: 0.2 } // Trigger when 20% of the element is visible
+    );
+
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.unobserve(section);
+    };
   }, []);
 
   // Carousel responsive settings
@@ -43,10 +65,10 @@ margin-bottom: 8px;}
 
 
   return (
-    <section className={styles['about-us-section']}>
+    <section ref={sectionRef} className={styles['about-us-section']}>
        <div className={styles['header']}>
   <p className={styles['subtitle']}>Your Trusted Travel Partner</p>
-  <h2 className={styles['title']}>Why Choose Us</h2>
+  <h1 className={styles['title']}>Why Choose Us</h1>
 </div>
 
      

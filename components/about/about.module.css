@@ -12,9 +12,31 @@
     margin-top: 50px;
   }
   
-  .text-container {
+  /* .text-container {
     max-width: 50%;
-  }
+  } */
+
+/* Initial hidden state */
+.text-container,
+.images-container {
+  opacity: 0;
+  transform: translateX(-100px); /* Debugging */
+  transition: all 1s ease-out;
+}
+
+.images-container {
+  transform: translateX(100px); /* Debugging */
+}
+
+/* Visible state when animation triggers */
+.text-container.animate,
+.images-container.animate {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 1s ease-out;
+}
+
+
   
   .subtitle {
     color: #6da06f;
@@ -93,6 +115,18 @@
     .images-container{
       width: 100%;
     }
+
+    /* Initial hidden state */
+.text-container,
+.images-container {
+  opacity: 0;
+  transform: translateX(-10px); /* Debugging */
+  transition: all 1s ease-out;
+}
+
+.images-container {
+  transform: translateX(10px); /* Debugging */
+}
   }
   @media  screen and (max-width:450px)  {
     .about-us-section{

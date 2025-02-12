@@ -52,6 +52,8 @@ const TourBookingPanel = ({
   const [paymentOption, setPaymentOption] = useState("default");
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
+ console.log(seasons);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 990px)");
     setIsLargeScreen(mediaQuery.matches);
@@ -274,103 +276,87 @@ const TourBookingPanel = ({
   };
   const handlePersonChange = (type, operation) => {
     setBookButton((prev) => {
-      const newAdults =
-        type === "adults"
-          ? operation === "increase"
-            ? (prev.adults || 0) + 1
-            : Math.max((prev.adults || 0) - 1, 1)
-          : prev.adults;
+        let newAdults = prev.adults;
+        let newChildren = prev.children;
 
-      const newChildren =
-        type === "children"
-          ? operation === "increase"
-            ? (prev.children || 0) + 1
-            : Math.max((prev.children || 0) - 1, 0)
-          : prev.children;
+        // Find the selected season
+        const selectedS = seasons.find((season) => season._id === selectedSeason);
+        if (!selectedS) return prev; // Prevent errors if season not found
 
-      const totalPersons = newAdults + newChildren;
-      console.log("New Children:", newChildren);
+        // Get the max person limit from the pricing array
+        const maxPerson = Math.max(...selectedS.pricing.map(p => p.person || 0)); // Max valid person count
 
-      // Find the correct season by seasonId
-      const selectedS = seasons.find((season) => season._id === selectedSeason);
-      const matchedPricing =
-        selectedS?.pricing.find((p) => p.person === totalPersons) || {};
-      console.log("Matched Pricing:", matchedPricing.price);
-      console.log("Matched Pricing:", matchedPricing.person);
+        let totalPersons = prev.adults + prev.children;
 
-      // Calculate per-person price
-      const perPersonPrice = matchedPricing.price / matchedPricing.person;
-      console.log(perPersonPrice);
-      // Calculate adult and child prices
-      const adultPrice = perPersonPrice * newAdults;
-      const childPrice = perPersonPrice * 0.5 * newChildren;
-      const totalPrice = adultPrice + childPrice;
+        if (type === "adults") {
+            if (operation === "increase" && totalPersons < maxPerson) {
+                newAdults += 1;
+            } else if (operation === "decrease" && newAdults > 1) {
+                newAdults -= 1;
+            }
+        } else if (type === "children") {
+            if (operation === "increase" && totalPersons < maxPerson) {
+                newChildren += 1;
+            } else if (operation === "decrease" && newChildren > 0) {
+                newChildren -= 1;
+            }
+        }
 
-      console.log("Per Person Price:", perPersonPrice);
-      console.log("Adult Price:", adultPrice);
-      console.log("Child Price (Half):", childPrice);
-      console.log("Total Price:", totalPrice);
+        // Update total persons
+        totalPersons = newAdults + newChildren;
 
-      return calculateUpdatedPrice(
-        {
-          ...prev,
-          adults: newAdults,
-          children: newChildren,
-          totalPrice,
-        },
-        matchedPricing
-      );
+        // Find matching pricing, but do not exceed maxPerson
+        let matchedPricing = selectedS.pricing.find(p => p.person === totalPersons) || prev.matchedPricing || {};
+
+        return calculateUpdatedPrice({
+            ...prev,
+            adults: newAdults,
+            children: newChildren,
+        }, matchedPricing, paymentOption);
     });
-  };
-  {
-    paymentOption == "partial";
-  }
-  const handlePaymentChange = (option) => {
+};
+
+
+const handlePaymentChange = (option) => {
     setPaymentOption(option);
+
     setBookButton((prev) => {
-      const totalPersons = prev.adults + prev.children;
+        const totalPersons = prev.adults + prev.children;
+        const selectedS = seasons.find((season) => season._id === selectedSeason);
+        const matchedPricing = selectedS?.pricing.find((p) => p.person === totalPersons) || prev.matchedPricing || {};
 
-      // Find the selected season
-      const selectedS = seasons.find((season) => season._id === selectedSeason);
-
-      // Find the matched pricing for the total number of persons
-      const matchedPricing =
-        selectedS?.pricing.find((p) => p.person === totalPersons) || {};
-
-      return calculateUpdatedPrice(prev, matchedPricing, option);
+        return calculateUpdatedPrice(prev, matchedPricing, option);
     });
-  };
+};
 
-  const calculateUpdatedPrice = (
-    prev,
-    matchedPricing,
-    newPaymentOption = paymentOption
-  ) => {
-    const basePrice = matchedPricing.price || prev.price || 0;
+const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
+  const basePrice = matchedPricing?.price || prev.originalPrice || 0; // Ensure original price is used
 
-    // Apply partial payment discount if applicable
-    const discount =
-      newPaymentOption === "partial" && partialPayment.amount
-        ? (basePrice * partialPayment.amount) / 100
-        : 0;
+  let finalPrice = basePrice;
 
-    const discountedPrice = basePrice - discount;
+  // Apply discount for partial payment
+  if (newPaymentOption === "partial" && partialPayment?.amount) {
+      const discount = (basePrice * partialPayment.amount) / 100;
+      finalPrice = basePrice - discount;
+  }
 
-    const totalPersons = prev.adults + prev.children;
-    const pricePerAdult = discountedPrice / totalPersons; // Correct per-person price
-    const pricePerChild = pricePerAdult * 0.5; // 50% of adult price
+  const totalPersons = prev.adults + prev.children || 1; // Avoid division by zero
+  const pricePerAdult = finalPrice / totalPersons;
+  const pricePerChild = pricePerAdult * 0.5; // *Fix: 50% of adult price*
 
-    const totalAdultPrice = prev.adults * pricePerAdult;
-    const totalChildPrice = prev.children * pricePerChild;
-    const finalPrice = totalAdultPrice + totalChildPrice;
+  const totalAdultPrice = prev.adults * pricePerAdult;
+  const totalChildPrice = prev.children * pricePerChild;
+  const updatedFinalPrice = totalAdultPrice + totalChildPrice; // *Fix: Correct total price*
 
-    return {
+  return {
       ...prev,
-      price: finalPrice,
-      pricePerPerson: pricePerAdult.toFixed(2), // Keep per-person price correct
-      room: matchedPricing.rooms || prev.room,
-    };
+      price: updatedFinalPrice, // *Fix: Corrected final price*
+      pricePerPerson: pricePerAdult.toFixed(2), // Ensure correct display
+      pricePerChild: pricePerChild.toFixed(2), // *Fix: Add child price separately*
+      originalPrice: prev.originalPrice || basePrice, // Store original price
+      room: matchedPricing?.rooms || prev.room,
   };
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -419,7 +405,9 @@ const TourBookingPanel = ({
       maxRoom: {
         room: maxPricing.rooms,
         price: maxPricing.price,
-        pricePerPerson: maxPricing.pricePerPerson, // Already formatted
+        pricePerPerson: maxPricing.pricePerPerson,
+        maxP : maxPricing.person,
+        // Already formatted
       },
     };
   });
@@ -551,6 +539,7 @@ const TourBookingPanel = ({
                     <span>{formatDate(season.endDate)}</span>
                   </p>
                 </div>
+               
                 <div className={styles["seasonsCard-its"]}>
                   <p>
                     <strong>₹{season.maxRoom.pricePerPerson}</strong> /per
@@ -558,6 +547,11 @@ const TourBookingPanel = ({
                   </p>
                   <p>
                     <strong>Room:</strong> {season.maxRoom.room}
+                  </p>
+                </div>
+                <div className={styles["seasonsCard-itss"]}>
+                  <p>
+                    <strong>Total price for {season.maxRoom.maxP} people is:</strong> {season.maxRoom.price}  
                   </p>
                 </div>
                 <button

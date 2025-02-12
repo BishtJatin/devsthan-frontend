@@ -779,7 +779,7 @@
 }
 
 .header h1 {
-  font-size: 28px;
+  font-size: 36px;
   margin-bottom: 10px;
 }
 
@@ -1319,6 +1319,7 @@ margin-bottom: 10px;
   max-height: 800px;
   overflow-y: scroll; /* Allows vertical scrolling */
   scrollbar-width: none; 
+  
   border-radius: 15px;/* For Firefox */
 }
 
@@ -1334,6 +1335,7 @@ margin-bottom: 10px;
   flex-direction: column;
   justify-content: space-around;
   gap: 20px;
+  
   
 }
 
@@ -1355,11 +1357,20 @@ margin-bottom: 10px;
   padding: 10px 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
   border-radius: 8px;
+  background-color: #f1f6e3;
 }
 
-.seasonsCard-item-heading{
+.seasonsCard-item-heading {
   display: flex;
+  color: white;
+  border: 2px solid #ccc; /* Adds a border with light gray color */
+  border-radius: 8px; /* Optional: Rounds the corners */
+  padding: 10px; /* Adds space inside the border */
+  background-color: #63ab45; /* Optional: Light background color */
+  margin: 8px 0; /* Optional: Space between items */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better visual */
 }
+
 
 .seasonsCard-it {
   display: flex;
@@ -1375,6 +1386,12 @@ margin-bottom: 10px;
   gap: 50px;
   margin-top: 10px;
   
+}
+.seasonsCard-itss{
+  display: flex;
+  font-size: 15.5px;
+  gap: 50px;
+  margin-top: 12px;
 }
 
 .seasonsCard-date {
@@ -1573,7 +1590,7 @@ padding: 10px 20px !important;
  
 
   .seasonsCard { 
-    max-height: 280px;
+    max-height: 380px;
 /* Stack cards vertically */
     gap: 20px; /* Add spacing between cards */
     overflow-x: scroll; /* Prevent horizontal scrolling */
@@ -1589,6 +1606,9 @@ padding: 10px 20px !important;
   .seasonsCard-its{
     gap: 35px;
     
+  }
+  .seasonsCard-itss{
+    font-size: 14.5px;
   }
   .seasonsCard-it{
     gap: 32px;
@@ -1608,8 +1628,12 @@ padding: 10px 20px !important;
   }
 
   .header h1 {
-    font-size: 18px;
-    margin-top: 50px;
+    font-size: 24px;
+    margin-left: -40px;
+  }
+
+  .sub-header{
+    margin-left: -40px;
   }
   
   .tabs {

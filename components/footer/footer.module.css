@@ -75,6 +75,13 @@ color: white;
     font-size: 18px;
     margin-bottom: 10px;
   }
+
+  /* quick buttons */
+
+  .footer-quickbuttons{
+    display: flex;
+    flex-direction: row;
+  }
   
   .quick-links ul {
     list-style: none;
@@ -84,6 +91,7 @@ color: white;
   
   .quick-links li {
     margin-bottom: 5px;
+    color: #63ab45;
    
   }
   .li{
@@ -119,6 +127,8 @@ color: white;
     text-decoration: underline;
   }
   
+ 
+
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -142,5 +152,18 @@ color: white;
   .footer{
     padding: 10px;
   }
-  
+  .footer-bottom-pages{
+    margin-bottom: 80px;
+  }
+  .promo-section{
+    display: flex;
+  }
+  .social-links{
+    border: 2px solid #ccc; /* Adds a border with light gray color */
+  border-radius: 8px; /* Optional: Rounds the corners */
+  /* Adds space inside the border */
+  padding: 5px 16px;
+  max-height: 60px;
+  background-color: #63ab45; /* Optional: Light background color */ /* Optional: Space between items */
+  }
 }

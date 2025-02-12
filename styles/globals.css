@@ -67,12 +67,20 @@ body {
 }
 
 /* Media query for smaller screens */
+@media screen and (max-width: 1024px) {
+  .quickbuttons-wrapper{
+    display: none;
+  }
+}
+
 @media screen and (max-width: 450px) {
   .quickbuttons1,
   .quickbuttons2 {
     width: 35px;
     height: 90px;
   }
+
+ 
 
   .quickbuttons2 {
     bottom: 151px;

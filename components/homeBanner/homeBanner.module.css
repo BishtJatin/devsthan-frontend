@@ -2,13 +2,23 @@
     max-width: 90%;
     margin-inline: auto;
     padding-inline: 35px;
-    
     border-radius: 30px;
     margin-top: 15px;
     position: relative;
     display: flex;
     justify-content: center;
+    animation: slide-left-right 3s linear forwards; /* Animate only once */
+    transform: translateX(-10%); /* Start off-screen */
+    animation: slide-in 1.5s ease-out forwards; /* Animate to normal position */
 }
+  
+  @keyframes slide-in {
+    100% {
+      transform: translateX(0); /* End at normal position */
+    }
+  }
+  
+  
 .search-button{
         border: 1px solid #ddd;
     padding: 5px;
@@ -51,9 +61,7 @@
 
 
 .banner-outer {
-
-
-    height: 700px;
+    max-height: 85vh;
     width: 100%;
 }
 
@@ -80,7 +88,7 @@
 
 .banner-inner {
 
-    height: 700px;
+    height: 78vh;
     width: 100%;
     position: relative;
     display: flex;
@@ -219,7 +227,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+     /* Adjust opacity as needed */
     z-index: 1;
 }
 .dropdown-option {
@@ -350,11 +358,11 @@
 
     .home-banner {
         padding-inline: 20px;
-        height: 820px;
+        height: 73vh;
         margin-top: 10px;
     }
     .banner-inner{
-        height: 600px;
+        height: 400px;
     }
 
     .search-headings-tour {
