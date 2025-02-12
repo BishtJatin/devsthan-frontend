@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import Image from "next/image";
 import styles from './about.module.css'
 import Link from 'next/link';
-const about = () => {
+const About = () => {
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -37,7 +37,7 @@ const about = () => {
         <section className={styles['about-us-section']}>
           <div className={styles['text-container']}>
             <p className={styles['subtitle']}>About Us</p>
-            <h2 className={styles['title']}>Let’s know About Devsthan Expert</h2>
+            <h2 className={styles['title']}>Lets know About Devsthan Expert</h2>
             <div className={styles['icons']}>
               <div className={styles['icon-item']}>
                 <span className={styles['icon-text']}>🎯 Mission & Vision</span>
@@ -96,5 +96,5 @@ const about = () => {
         )
 }
 
-export default about
+export default About
 
