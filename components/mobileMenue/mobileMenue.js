@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './mobileMenue.module.css';
 import { FaRegUser, FaArrowRight } from "react-icons/fa6";
 
 import Link from 'next/link';
 
 const MobileMenu = ({ isOpen, toggleMenu, isLoggedIn }) => {
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggle = () => {
+      setIsMenuOpen((prev) => !prev);
+    };
     return (
         <div className={`${styles['mobile-menu']} ${isOpen ? styles['open'] : ''}`}>
             <div className={styles['menu-header']}>
@@ -18,12 +24,18 @@ const MobileMenu = ({ isOpen, toggleMenu, isLoggedIn }) => {
             </div>
             <ul className={styles['menu-list']}>
 
-                <li onClick={toggleMenu}>
-
-                    <Link href={`/tours/allTours`}>
-                        Tours <FaArrowRight className={styles['arrow-icon']} />
-                    </Link>
-                </li>
+            <li onClick={toggle}>
+            Tours
+        </li>
+        {isMenuOpen && (
+          <div className={styles["tour-buttons"]}>
+            <li onClick={toggleMenu} className={styles["tour-button"]}>
+              <Link href="/packages/openhourtour/uttarakhand">Open Hour Tour  <FaArrowRight className={styles["arrow-icon"]} /></Link>
+            </li>
+            <li onClick={toggleMenu} className={styles["tour-button"]}>
+              <Link href="/packages/fixedtour/uttarakhand">Fixed Tour  <FaArrowRight className={styles["arrow-icon"]} /></Link>
+            </li>
+          </div>)}
                 <li onClick={toggleMenu}>
                     <Link href="/about">
                         About <FaArrowRight className={styles['arrow-icon']} />

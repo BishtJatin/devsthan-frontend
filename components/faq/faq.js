@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import styles from "../faq/faq.module.css";
 
 const FAQ = ({ faqData }) => {
-  const [filteredData, setFilteredData] = useState([]); // Filtered questions and answers
+  const [filteredData, setFilteredData] = useState([]); // Filtered questions based on category
   const [searchSuggestions, setSearchSuggestions] = useState([]); // Categories for search suggestions
   const [searchTerm, setSearchTerm] = useState(""); // Search term
+  const [selectedCategory, setSelectedCategory] = useState(""); // Selected category to display questions
   const [expandedQuestions, setExpandedQuestions] = useState({}); // Tracks expanded questions
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Controls dropdown visibility
 
   // Generate category suggestions on load
   useEffect(() => {
@@ -13,20 +15,18 @@ const FAQ = ({ faqData }) => {
       ...new Set(faqData.map((item) => item.category)),
     ];
     setSearchSuggestions(uniqueCategories);
-    setFilteredData(faqData);
+    setSelectedCategory(uniqueCategories[0]); // Set the first category as default
   }, [faqData]);
 
-  // Filter questions and answers based on search term
+  // Filter questions based on selected category
   useEffect(() => {
-    if (searchTerm) {
+    if (selectedCategory) {
       const filtered = faqData.filter((item) =>
-        item.category.toLowerCase().includes(searchTerm.toLowerCase())
+        item.category === selectedCategory
       );
       setFilteredData(filtered);
-    } else {
-      setFilteredData(faqData); // Show all questions by default
     }
-  }, [searchTerm, faqData]);
+  }, [selectedCategory, faqData]);
 
   // Toggle the expanded state of a question
   const toggleQuestion = (index) => {
@@ -34,6 +34,11 @@ const FAQ = ({ faqData }) => {
       ...prev,
       [index]: !prev[index],
     }));
+  };
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setIsDropdownOpen(false); // Close the dropdown after selection
   };
 
   return (
@@ -48,13 +53,25 @@ const FAQ = ({ faqData }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className={styles["search-input"]}
-          list="category-suggestions"
+          onFocus={() => setIsDropdownOpen(true)} // Open dropdown when focused
         />
-        <datalist id="category-suggestions">
-          {searchSuggestions.map((category, index) => (
-            <option key={index} value={category} />
-          ))}
-        </datalist>
+        {isDropdownOpen && (
+          <div className={styles["custom-dropdown"]}>
+            {searchSuggestions
+              .filter((category) =>
+                category.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((category, index) => (
+                <div
+                  key={index}
+                  className={styles["dropdown-item"]}
+                  onClick={() => handleCategoryClick(category)} // Set selected category and close dropdown
+                >
+                  {category}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
 
       {/* Display Questions and Answers */}
