@@ -126,7 +126,71 @@ color: white;
   .footer-bottom a:hover {
     text-decoration: underline;
   }
+
+  .app-download {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 370px;
+    margin-top: 5px;
+  }
   
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .store-button {
+    width: 150px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .store-button:hover {
+    transform: scale(1.05);
+  }
+  
+  
+  .app-download1 {
+    text-align: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    margin: 10px auto;
+  }
+
+  .title1 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .buttons1 {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .store-button1 {
+    width: 50px;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .store-button1:hover {
+    transform: scale(1.05);
+  }
  
 
   @keyframes fadeIn {
@@ -134,6 +198,18 @@ color: white;
     to { opacity: 1; }
   }
   
+  @media screen and (max-width: 1040px) {
+
+    .app-download {
+      display: none;
+    }
+
+    /* .app-download {
+      display: flex;
+      flex-direction: column;
+    } */
+
+  }
 
   @media screen and (max-width: 950px) {
     .footer-links {
@@ -152,18 +228,48 @@ color: white;
   .footer{
     padding: 10px;
   }
-  .footer-bottom-pages{
-    margin-bottom: 80px;
-  }
   .promo-section{
     display: flex;
   }
   .social-links{
-    border: 2px solid #ccc; /* Adds a border with light gray color */
-  border-radius: 8px; /* Optional: Rounds the corners */
-  /* Adds space inside the border */
-  padding: 5px 16px;
-  max-height: 60px;
-  background-color: #63ab45; /* Optional: Light background color */ /* Optional: Space between items */
+ 
+  
+  margin-top: 108px;/* Optional: Light background color */ /* Optional: Space between items */
   }
+
+ /* Increase icon size and set default color */
+/* Common styles for all social icons */
+.social-icon {
+  font-size: 30px; /* Adjust icon size */
+  transition: transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Individual colors for each icon */
+.social-links :nth-child(1) .social-icon {
+  color: white;
+        border: 2px solid #fff;
+        padding: 5px 10px;
+        width: 45px;
+        background: #63ab45;
+}
+
+.social-links :nth-child(2) .social-icon {
+  color: white;
+        border: 2px solid #fff;
+        padding: 5px 10px;
+        width: 45px;
+        background: #63ab45;
+}
+
+.social-links :nth-child(3) .social-icon {
+  color: white;
+  border: 2px solid #fff;
+  padding: 5px 10px;
+  width: 45px;
+  background: #63ab45;/* YouTube red */
+}
+
+
+
+
 }

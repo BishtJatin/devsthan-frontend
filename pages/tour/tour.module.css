@@ -34,6 +34,11 @@
   margin: 0;
 }
 
+.faq{
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: -310px;
+}
 
 .highlights {
   margin-bottom: 20px;
@@ -1363,7 +1368,7 @@ margin-bottom: 10px;
 .seasonsCard-item-heading {
   display: flex;
   color: white;
-  border: 2px solid #ccc; /* Adds a border with light gray color */
+  border: 0px solid #ccc; /* Adds a border with light gray color */
   border-radius: 8px; /* Optional: Rounds the corners */
   padding: 10px; /* Adds space inside the border */
   background-color: #63ab45; /* Optional: Light background color */
@@ -1375,7 +1380,7 @@ margin-bottom: 10px;
 .seasonsCard-it {
   display: flex;
   margin-top: 10px;
-  gap: 38px; /* Equal spacing between items */
+  gap: 94px; /* Equal spacing between items */
   align-items: center; /* Distributes items evenly */
 }
 
@@ -1395,10 +1400,20 @@ margin-bottom: 10px;
 }
 
 .seasonsCard-date {
-  flex: 1; /* Ensures both <p> tags take equal space */
-  text-align: left; /* Aligns text inside <p> */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px; 
+  /* Aligns text inside <p> */
 }
 
+
+.seasonsCard-line {
+  width: 100%; /* Set the line width */
+  height: 1px; /* Set the line thickness */
+  background-color: #ddd; /* Set the line color */
+  margin: 10px auto; /* Center the line horizontally and add vertical spacing */
+  border: none; /* Remove any default border styling */
+}
 
 /* sesons card fix  */
 
@@ -1590,12 +1605,20 @@ padding: 10px 20px !important;
  
 
   .seasonsCard { 
-    max-height: 380px;
+    max-height: 480px;
 /* Stack cards vertically */
     gap: 20px; /* Add spacing between cards */
     overflow-x: scroll; /* Prevent horizontal scrolling */
     padding: 0 10px; 
  
+  }
+  
+  .seasonsCard-line{
+    width: 100%; /* Set the line width */
+    height: 1px; /* Set the line thickness */
+    background-color: #ddd; /* Set the line color */
+    position: relative; /* Center the line horizontally and add vertical spacing */
+    border: none; 
   }
 
   .seasonsCard-item {
@@ -1604,14 +1627,14 @@ padding: 10px 20px !important;
     margin-bottom: 10px; /* Center-align cards */
   }
   .seasonsCard-its{
-    gap: 35px;
+    gap: 25px;
     
   }
   .seasonsCard-itss{
     font-size: 14.5px;
   }
   .seasonsCard-it{
-    gap: 32px;
+    gap: 60px;
     
   }
   .seasonsCardfix{

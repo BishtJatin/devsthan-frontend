@@ -70,53 +70,48 @@ const Profile = () => {
     // { name: 'Wishlist', icon: <FaHeart /> },
     { name: 'Logout', icon: <FaSignOutAlt /> },
   ];
-
   const handleCancelTour = async (orderId) => {
-    const isConfirmed = window.confirm('Are you sure you want to cancel this tour?'); // Show confirmation dialog
-
+    const isConfirmed = window.confirm('Are you sure you want to cancel this tour?');
+  
     if (!isConfirmed) {
-      return; // Exit if the user clicks "Cancel"
+      return; // Exit if user cancels the confirmation
     }
-
-    // Optimistically update the UI to disable the button immediately
-    const updatedTours = bookedTour.map(tour =>
+  
+    // Optimistically update the UI
+    const updatedTours = bookedTour.map((tour) =>
       tour._id === orderId ? { ...tour, cancelStatus: true } : tour
     );
     setBookedTour(updatedTours); // Update state immediately
-
+  
     try {
       const response = await apiCall({
         endpoint: `/api/cancelBooking/${orderId}`,
         method: 'POST',
         body: { cancelStatus: true },
       });
-
+  
       if (response.success) {
-        toast.success('Tour Cancelled Successfully');
-        const updatedTours = bookedTour.map(tour =>
-          tour._id === orderId ? { ...tour, status: 'Cancelled' } : tour
-        );
-        setBookedTour(updatedTours); // Update state with the modified tour status
+        toast.success('Tour cancelled successfully');
       } else {
         toast.error('Failed to cancel the tour. Please try again.');
-
-        // Revert the optimistic update if the API call fails
-        const revertedTours = bookedTour.map(tour =>
+        // Revert the optimistic update if API fails
+        const revertedTours = bookedTour.map((tour) =>
           tour._id === orderId ? { ...tour, cancelStatus: false } : tour
         );
-        setBookedTour(revertedTours); // Revert state
+        setBookedTour(revertedTours);
       }
     } catch (error) {
       console.error('Error cancelling tour:', error);
       toast.error('An error occurred. Please try again later.');
-
+  
       // Revert the optimistic update in case of an error
-      const revertedTours = bookedTour.map(tour =>
+      const revertedTours = bookedTour.map((tour) =>
         tour._id === orderId ? { ...tour, cancelStatus: false } : tour
       );
-      setBookedTour(revertedTours); // Revert state
+      setBookedTour(revertedTours);
     }
   };
+  
 
 
   useEffect(() => {

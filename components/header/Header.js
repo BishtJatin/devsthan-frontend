@@ -6,10 +6,13 @@ import { FiPhoneCall } from "react-icons/fi";
 
 import Link from "next/link";
 import MobileMenu from "../mobileMenue/mobileMenue";
+import { FaWhatsapp } from "react-icons/fa";
+import TestButton from "../testbutton/TestButton";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track user login status
+  
 
   const [isToursOpen, setIsToursOpen] = useState(false);
 
@@ -48,6 +51,7 @@ const Header = () => {
             />
           </Link>
         </div>
+
         <nav className={styles["nav-menu"]}>
           <ul>
             <li>
@@ -64,8 +68,7 @@ const Header = () => {
                   <Link
                     className={styles["nav-link"]}
                     href={{
-                      pathname: "/tours/OpenHour",
-                      query: { tourType: "openHour" },
+                      pathname: "/packages/openhourtour/uttarakhand",
                     }}
                   >
                     Open hour Tour
@@ -73,8 +76,7 @@ const Header = () => {
                   <Link
                     className={styles["nav-link"]}
                     href={{
-                      pathname: "/tours/fixTour",
-                      query: { tourType: "fixedTour" },
+                      pathname: "/packages/fixedtour/uttarakhand",
                     }}
                   >
                     Fixed Tour

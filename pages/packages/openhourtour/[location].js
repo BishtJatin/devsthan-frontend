@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./tourCategory.module.css";
-import { apiCall } from "../../utils/common"; // Adjust path based on where your apiCall is defined
-import ToursList from "../../components/toursList/toursList";
-import { BASE_URL } from "../../utils/headers";
+import { apiCall } from "../../../utils/common"; // Adjust path based on where your apiCall is defined
+import ToursList from "../../../components/toursList/toursList";
+import { BASE_URL } from "../../../utils/headers";
 import { useRouter } from "next/router";
 import Slider from "rc-slider";
 import Head from "next/head";
@@ -10,7 +10,7 @@ import "rc-slider/assets/index.css";
 import { RxCross2 } from "react-icons/rx";
 import { IoFilter } from "react-icons/io5";
 import Link from "next/link";
-import Loader from "../../components/loader/loader";
+import Loader from "../../../components/loader/loader";
 import Image from "next/image";
 import errorimage from "./errorimage.jpg";
 
@@ -125,9 +125,10 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
           },
           body: JSON.stringify({
             tourType: checkedCategories,
-            fixedTour: query.tourType === 'fixedTour' ? true : false,
-            minPrice,
-            maxPrice,
+            location: location,
+            // minPrice,
+            // maxPrice,
+            fixedTour:false,
             durations: checkedDuration,
           }),
         });

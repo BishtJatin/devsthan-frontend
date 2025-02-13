@@ -11,7 +11,26 @@ import TestButton from "../testbutton/TestButton";
 import { useEffect, useState } from "react";
 
 export default function footer() {
-  
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Check if the screen width is 1040px or smaller
+      setIsMobileView(window.innerWidth <= 1040);
+    };
+
+    // Add event listener on component mount
+    window.addEventListener('resize', handleResize);
+
+    // Call once to set initial state
+    handleResize();
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   const whatsappNumber = "+918683818381"; // Replace with your WhatsApp number
   const message = "Hello, I want to book a tour";
@@ -24,7 +43,7 @@ export default function footer() {
           <Link href="/tours/uttarakhand">
             {" "}
             <button className={styles["promo-button"]}>Book A Tour</button>
-            
+         
           </Link>
           </div>
           <div className={styles["social-links"]}>
@@ -50,9 +69,47 @@ export default function footer() {
               <FaYoutube className={styles["social-icon"]} />
             </Link>
           </div>
+          <div className={styles['app-download']}>
+      <h2 className={styles['title']}>Download Our App!</h2>
+      <div className={styles['buttons']}>
+        <a href="https://play.google.com" target="_blank" rel="noopener noreferrer">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0623/9010/8391/files/google-play-store-icon.jpg?v=1722921856"
+            alt="Download on Google Play"
+            className={styles['store-button']}
+          />
+        </a>
+        <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0623/9010/8391/files/app-store-icon.jpg?v=1717044385"
+            alt="Download on App Store"
+            className={styles['store-button']}
+          />
+        </a>
+      </div>
+    </div>
         </div>
-    
+      {  isMobileView &&<div className={styles['app-download1']}>
+      <h2 className={styles['title1']}>Download Our App!</h2>
+      <div className={styles['buttons1']}>
+        <a href="https://play.google.com" target="_blank" rel="noopener noreferrer">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0623/9010/8391/files/google-play-store-icon.jpg?v=1722921856"
+            alt="Download on Google Play"
+            className={styles['store-button']}
+          />
+        </a>
+        <a href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0623/9010/8391/files/app-store-icon.jpg?v=1717044385"
+            alt="Download on App Store"
+            className={styles['store-button']}
+          />
+        </a>
+      </div>
+    </div>}
         <div className={styles["footer-links"]}>
+          
           <div className={styles["quick-links"]}>
             <h3>Quick Link</h3>
             <ul>

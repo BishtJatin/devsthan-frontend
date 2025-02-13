@@ -29,20 +29,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
   
 
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  useEffect(() => {
-    const checkScreenWidth = () => {
-      setIsSmallScreen(window.innerWidth < 1040);
-    };
-
-    checkScreenWidth(); // Check screen size on initial render
-    window.addEventListener('resize', checkScreenWidth); // Listen for screen size changes
-
-    return () => {
-      window.removeEventListener('resize', checkScreenWidth); // Cleanup on unmount
-    };
-  }, []);
+  
 
   
 
@@ -98,11 +85,7 @@ function MyApp({ Component, pageProps }) {
       <Footer />
 
       {/* WhatsApp Button */}
-      <Draggable
-        axis="y"
-        bounds={{ top: 0, bottom: windowHeight - 120 }}
-        disabled={!dragging} // Disable dragging when not hovering or touching
-      >
+     
         <div className="quickbuttons-wrapper">
           {/* WhatsApp Button */}
           <a
@@ -112,7 +95,7 @@ function MyApp({ Component, pageProps }) {
             rel="noopener noreferrer"
             // onMouseEnter={handleMouseEnter} // Enable dragging when hovered
             // onMouseLeave={handleMouseLeave} // Disable dragging when mouse leaves
-            onTouchStart={handleTouchStart} // Enable dragging on touch start
+            // onTouchStart={handleTouchStart} // Enable dragging on touch start
             // onTouchEnd={handleTouchEnd} // Disable dragging on touch end
           >
             <FaWhatsapp size={30} />
@@ -123,65 +106,16 @@ function MyApp({ Component, pageProps }) {
             className="quickbuttons2"
             // onMouseEnter={handleMouseEnter} // Enable dragging when hovered
             // onMouseLeave={handleMouseLeave} // Disable dragging when mouse leaves
-            onTouchStart={handleTouchStart} // Enable dragging on touch start
+            // onTouchStart={handleTouchStart} // Enable dragging on touch start
             // onTouchEnd={handleTouchEnd} // Disable dragging on touch end
           >
             <TestButton />
           </a>
         </div>
-      </Draggable>
+      
 
 
-      {isSmallScreen && (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "fixed", // Fixes it at a specific position
-      bottom: 0,         // Places it at the bottom of the screen
-      width: "100%",     // Spans the entire width of the screen
-      backgroundColor: "#edf2de", // Optional background color
-      boxShadow: "0 -2px 5px rgba(0,0,0,0.1)", // Optional shadow
-      zIndex: 1000,      // Ensures it stays on top of other content
-      padding: "10px 0", // Adds some vertical padding
-    }}
-  >
-    {/* WhatsApp Button */}
-    <a
-      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
-      className="footer-quickbuttons1"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        backgroundColor: "#25D366",
-        color: "white",
-        padding: "6px 60px",
-        paddingTop:"12px",
-        fontSize: "20px",
-        marginRight: "10px", // Adds spacing between buttons
-        borderRadius: "5px", // Optional rounded corners
-      }}
-    >
-      <FaWhatsapp />
-    </a>
-
-    {/* TestButton */}
-    <a
-      className="footer-quickbuttons2"
-      style={{
-        backgroundColor: "#213f98",
-        color: "white",
-        padding: "6px 60px",
-        paddingTop:"12px",
-        fontSize: "20px",
-        borderRadius: "5px", // Optional rounded corners
-      }}
-    >
-      <TestButton />
-    </a>
-  </div>
-)}
+  
 
 
     </>

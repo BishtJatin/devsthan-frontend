@@ -52,7 +52,7 @@ const TourBookingPanel = ({
   const [paymentOption, setPaymentOption] = useState("default");
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
- console.log(seasons);
+  console.log(seasons);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 990px)");
@@ -276,87 +276,98 @@ const TourBookingPanel = ({
   };
   const handlePersonChange = (type, operation) => {
     setBookButton((prev) => {
-        let newAdults = prev.adults;
-        let newChildren = prev.children;
+      let newAdults = prev.adults;
+      let newChildren = prev.children;
 
-        // Find the selected season
-        const selectedS = seasons.find((season) => season._id === selectedSeason);
-        if (!selectedS) return prev; // Prevent errors if season not found
+      // Find the selected season
+      const selectedS = seasons.find((season) => season._id === selectedSeason);
+      if (!selectedS) return prev; // Prevent errors if season not found
 
-        // Get the max person limit from the pricing array
-        const maxPerson = Math.max(...selectedS.pricing.map(p => p.person || 0)); // Max valid person count
+      // Get the max person limit from the pricing array
+      const maxPerson = Math.max(
+        ...selectedS.pricing.map((p) => p.person || 0)
+      ); // Max valid person count
 
-        let totalPersons = prev.adults + prev.children;
+      let totalPersons = prev.adults + prev.children;
 
-        if (type === "adults") {
-            if (operation === "increase" && totalPersons < maxPerson) {
-                newAdults += 1;
-            } else if (operation === "decrease" && newAdults > 1) {
-                newAdults -= 1;
-            }
-        } else if (type === "children") {
-            if (operation === "increase" && totalPersons < maxPerson) {
-                newChildren += 1;
-            } else if (operation === "decrease" && newChildren > 0) {
-                newChildren -= 1;
-            }
+      if (type === "adults") {
+        if (operation === "increase" && totalPersons < maxPerson) {
+          newAdults += 1;
+        } else if (operation === "decrease" && newAdults > 1) {
+          newAdults -= 1;
         }
+      } else if (type === "children") {
+        if (operation === "increase" && totalPersons < maxPerson) {
+          newChildren += 1;
+        } else if (operation === "decrease" && newChildren > 0) {
+          newChildren -= 1;
+        }
+      }
 
-        // Update total persons
-        totalPersons = newAdults + newChildren;
+      // Update total persons
+      totalPersons = newAdults + newChildren;
 
-        // Find matching pricing, but do not exceed maxPerson
-        let matchedPricing = selectedS.pricing.find(p => p.person === totalPersons) || prev.matchedPricing || {};
+      // Find matching pricing, but do not exceed maxPerson
+      let matchedPricing =
+        selectedS.pricing.find((p) => p.person === totalPersons) ||
+        prev.matchedPricing ||
+        {};
 
-        return calculateUpdatedPrice({
-            ...prev,
-            adults: newAdults,
-            children: newChildren,
-        }, matchedPricing, paymentOption);
+      return calculateUpdatedPrice(
+        {
+          ...prev,
+          adults: newAdults,
+          children: newChildren,
+        },
+        matchedPricing,
+        paymentOption
+      );
     });
-};
+  };
 
-
-const handlePaymentChange = (option) => {
+  const handlePaymentChange = (option) => {
     setPaymentOption(option);
 
     setBookButton((prev) => {
-        const totalPersons = prev.adults + prev.children;
-        const selectedS = seasons.find((season) => season._id === selectedSeason);
-        const matchedPricing = selectedS?.pricing.find((p) => p.person === totalPersons) || prev.matchedPricing || {};
+      const totalPersons = prev.adults + prev.children;
+      const selectedS = seasons.find((season) => season._id === selectedSeason);
+      const matchedPricing =
+        selectedS?.pricing.find((p) => p.person === totalPersons) ||
+        prev.matchedPricing ||
+        {};
 
-        return calculateUpdatedPrice(prev, matchedPricing, option);
+      return calculateUpdatedPrice(prev, matchedPricing, option);
     });
-};
+  };
 
-const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
-  const basePrice = matchedPricing?.price || prev.originalPrice || 0; // Ensure original price is used
+  const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
+    const basePrice = matchedPricing?.price || prev.originalPrice || 0; // Ensure original price is used
 
-  let finalPrice = basePrice;
+    let finalPrice = basePrice;
 
-  // Apply discount for partial payment
-  if (newPaymentOption === "partial" && partialPayment?.amount) {
+    // Apply discount for partial payment
+    if (newPaymentOption === "partial" && partialPayment?.amount) {
       const discount = (basePrice * partialPayment.amount) / 100;
       finalPrice = basePrice - discount;
-  }
+    }
 
-  const totalPersons = prev.adults + prev.children || 1; // Avoid division by zero
-  const pricePerAdult = finalPrice / totalPersons;
-  const pricePerChild = pricePerAdult * 0.5; // *Fix: 50% of adult price*
+    const totalPersons = prev.adults + prev.children || 1; // Avoid division by zero
+    const pricePerAdult = finalPrice / totalPersons;
+    const pricePerChild = pricePerAdult * 0.5; // *Fix: 50% of adult price*
 
-  const totalAdultPrice = prev.adults * pricePerAdult;
-  const totalChildPrice = prev.children * pricePerChild;
-  const updatedFinalPrice = totalAdultPrice + totalChildPrice; // *Fix: Correct total price*
+    const totalAdultPrice = prev.adults * pricePerAdult;
+    const totalChildPrice = prev.children * pricePerChild;
+    const updatedFinalPrice = totalAdultPrice + totalChildPrice; // *Fix: Correct total price*
 
-  return {
+    return {
       ...prev,
       price: updatedFinalPrice, // *Fix: Corrected final price*
       pricePerPerson: pricePerAdult.toFixed(2), // Ensure correct display
       pricePerChild: pricePerChild.toFixed(2), // *Fix: Add child price separately*
       originalPrice: prev.originalPrice || basePrice, // Store original price
       room: matchedPricing?.rooms || prev.room,
+    };
   };
-};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -406,7 +417,7 @@ const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
         room: maxPricing.rooms,
         price: maxPricing.price,
         pricePerPerson: maxPricing.pricePerPerson,
-        maxP : maxPricing.person,
+        maxP: maxPricing.person,
         // Already formatted
       },
     };
@@ -493,53 +504,59 @@ const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
 
           {/* Buttons for filtering by month */}
           <div className={styles["filter-buttons"]}>
-  <button
-    className={`${styles["filter-button"]} ${
-      selectedMonth === "All" ? styles["active-button"] : styles["inactive-button"]
-    }`}
-    onClick={() => handleMonthClick("All")}
-  >
-    All
-  </button>
-  {uniqueMonths.map((month) => (
-    <button
-      key={month}
-      className={`${styles["filter-button"]} ${
-        selectedMonth === month.toString()
-          ? styles["active-button"]
-          : styles["inactive-button"]
-      }`}
-      onClick={() => handleMonthClick(month.toString())}
-    >
-      {new Date(0, month - 1).toLocaleString("default", {
-        month: "short",
-      })}
-    </button>
-  ))}
-</div>
-
+            <button
+              className={`${styles["filter-button"]} ${
+                selectedMonth === "All"
+                  ? styles["active-button"]
+                  : styles["inactive-button"]
+              }`}
+              onClick={() => handleMonthClick("All")}
+            >
+              All
+            </button>
+            {uniqueMonths.map((month) => (
+              <button
+                key={month}
+                className={`${styles["filter-button"]} ${
+                  selectedMonth === month.toString()
+                    ? styles["active-button"]
+                    : styles["inactive-button"]
+                }`}
+                onClick={() => handleMonthClick(month.toString())}
+              >
+                {new Date(0, month - 1).toLocaleString("default", {
+                  month: "short",
+                })}
+              </button>
+            ))}
+          </div>
 
           <div className={styles["seasonsCard"]}>
             {filteredSeasons.map((season, index) => (
               <div key={season._id} className={styles["seasonsCard-item"]}>
-                <h3  className={styles["seasonsCard-item-heading"]}>{season.seasonName}</h3>
+                <h3 className={styles["seasonsCard-item-heading"]}>
+                  {season.seasonName}
+                </h3>
+                <hr className={styles["seasonsCard-line"]} />
                 <div className={styles["seasonsCard-it"]}>
                   <p className={styles["seasonsCard-date"]}>
                     <strong>
-                      <IoLocationOutline style={{ color: "green" }} /> Starts{" "}
-                      {formatDay(season.startDate)}
+                      <IoLocationOutline style={{ color: "green" }} /> Starts
+                      Date{" "}
                     </strong>
+                    <span>{formatDay(season.startDate)}</span>
                     <span>{formatDate(season.startDate)}</span>
+                    
                   </p>
                   <p className={styles["seasonsCard-date"]}>
                     <strong>
-                      <IoLocationOutline style={{ color: "red" }} /> Ends{" "}
-                      {formatDay(season.endDate)}
+                      <IoLocationOutline style={{ color: "red" }} /> Ends Date{" "}
                     </strong>
+                    <span>{formatDay(season.endDate)}</span>
                     <span>{formatDate(season.endDate)}</span>
                   </p>
                 </div>
-               
+                <hr className={styles["seasonsCard-line"]} />
                 <div className={styles["seasonsCard-its"]}>
                   <p>
                     <strong>₹{season.maxRoom.pricePerPerson}</strong> /per
@@ -549,11 +566,16 @@ const calculateUpdatedPrice = (prev, matchedPricing, newPaymentOption) => {
                     <strong>Room:</strong> {season.maxRoom.room}
                   </p>
                 </div>
+                <hr className={styles["seasonsCard-line"]} />
                 <div className={styles["seasonsCard-itss"]}>
                   <p>
-                    <strong>Total price for {season.maxRoom.maxP} people is:</strong> {season.maxRoom.price}  
+                    <strong>
+                      Total price for {season.maxRoom.maxP} people is:
+                    </strong>{" "}
+                    {season.maxRoom.price}
                   </p>
                 </div>
+                <hr className={styles["seasonsCard-line"]} />
                 <button
                   className={styles["tour-booking-button-normal"]}
                   onClick={() => callbutton(index, season._id)}

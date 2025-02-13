@@ -13,6 +13,7 @@ import Itinerary from "../../components/itinery/itinery";
 import Loader from "../../components/loader/loader";
 
 import { PiArrowBendLeftDownBold } from "react-icons/pi";
+import FAQ from "../../components/faq/faq";
 
 const TourPage = ({ tourAllData }) => {
   const [selectedCategory, setSelectedCategory] = useState("standardDetails");
@@ -512,6 +513,9 @@ const TourPage = ({ tourAllData }) => {
                 </div>
               </div>
             )}
+
+
+           
             {isSmallScreen && (
               <div className={styles["tour-booking-panel"]}>
                 <p className={styles["panel-heading"]}>Book Your Tour</p>
@@ -567,6 +571,7 @@ const TourPage = ({ tourAllData }) => {
                 </form>
               </div>
             )}
+            
           </div>
 
           <TourBookingPanel
@@ -584,6 +589,9 @@ const TourPage = ({ tourAllData }) => {
             seasons={categoryDetails.seasons}
           />
         </div>
+        <div className={styles["faq"]}><FAQ
+        uuid={tourAllData[0].uuid}
+        /></div>
       </div>
     </>
   );

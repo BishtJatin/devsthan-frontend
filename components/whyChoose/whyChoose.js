@@ -131,7 +131,7 @@ if (!whyChoose || whyChoose.length === 0) {
           ))}
         </div>
       )}
-       <div className={styles.imageContainer}>
+       {/* <div className={styles.imageContainer}>
       <img
         src="https://res.cloudinary.com/drsexfijb/image/upload/v1738238021/download_it_on_Google_play_Store_xu7ln9.png" // Replace with your image URL
         alt="Full Width"
@@ -149,7 +149,7 @@ if (!whyChoose || whyChoose.length === 0) {
           className={styles.playstoreIcon}
         />
       </a>
-    </div>
+    </div> */}
     </section>
   );
 };
