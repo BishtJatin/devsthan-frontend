@@ -10,7 +10,7 @@ import {
 import TestButton from "../testbutton/TestButton";
 import { useEffect, useState } from "react";
 
-export default function footer() {
+export default function Footer() {
   const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {

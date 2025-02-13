@@ -15,11 +15,11 @@ import Loader from "../../components/loader/loader";
 import { PiArrowBendLeftDownBold } from "react-icons/pi";
 import FAQ from "../../components/faq/faq";
 
-const TourPage = ({ tourAllData }) => {
+const TourPage = ({ tourAllData,faqData }) => {
   const [selectedCategory, setSelectedCategory] = useState("standardDetails");
   const [activeTab, setActiveTab] = useState("Itinerary");
 
-  console.log(tourAllData);
+  console.log(faqData);
 
   const [showTooltip, setShowTooltip] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
@@ -590,7 +590,7 @@ const TourPage = ({ tourAllData }) => {
           />
         </div>
         <div className={styles["faq"]}><FAQ
-        uuid={tourAllData[0].uuid}
+        faqData={faqData}
         /></div>
       </div>
     </>
@@ -626,10 +626,21 @@ export async function getStaticProps({ params }) {
     data: { uuid },
   });
 
+
+  const faqData = await apiCall({
+    endpoint: `/api/getFaqs/${uuid}`,
+    method: "GET",
+  });
+
+  
+
   return {
     props: {
       tourAllData,
+      faqData,
     },
     revalidate: 600,
   };
+
+
 }

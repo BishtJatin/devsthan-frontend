@@ -1,43 +1,32 @@
 import { useState, useEffect } from "react";
 import styles from "../faq/faq.module.css";
 
-const FAQ = ({
-  uuid,
-}) => {
-  const [data, setData] = useState([]); // API data
-  const [filteredCategories, setFilteredCategories] = useState([]); // Search result
-  const [selectedCategory, setSelectedCategory] = useState(null); // Selected category
+const FAQ = ({ faqData }) => {
+  const [filteredData, setFilteredData] = useState([]); // Filtered questions and answers
+  const [searchSuggestions, setSearchSuggestions] = useState([]); // Categories for search suggestions
   const [searchTerm, setSearchTerm] = useState(""); // Search term
-  const [expandedQuestions, setExpandedQuestions] = useState({}); // Expanded state for questions
+  const [expandedQuestions, setExpandedQuestions] = useState({}); // Tracks expanded questions
 
-  // Fetch data from API
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch("/api/faqs"); // Replace with your API endpoint
-//         const result = await response.json();
-//         setData(result);
-//         setFilteredCategories(result);
-//       } catch (error) {
-//         console.error("Error fetching FAQ data:", error);
-//       }
-//     };
+  // Generate category suggestions on load
+  useEffect(() => {
+    const uniqueCategories = [
+      ...new Set(faqData.map((item) => item.category)),
+    ];
+    setSearchSuggestions(uniqueCategories);
+    setFilteredData(faqData);
+  }, [faqData]);
 
-//     fetchData();
-//   }, []);
-
-  // Filter categories based on search term
+  // Filter questions and answers based on search term
   useEffect(() => {
     if (searchTerm) {
-      setFilteredCategories(
-        data.filter((item) =>
-          item.category.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+      const filtered = faqData.filter((item) =>
+        item.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
+      setFilteredData(filtered);
     } else {
-      setFilteredCategories(data);
+      setFilteredData(faqData); // Show all questions by default
     }
-  }, [searchTerm, data]);
+  }, [searchTerm, faqData]);
 
   // Toggle the expanded state of a question
   const toggleQuestion = (index) => {
@@ -50,59 +39,43 @@ const FAQ = ({
   return (
     <div className={styles["faq-container"]}>
       <h2 className={styles["faq-heading"]}>Frequently Asked Questions</h2>
-      <input
-        type="text"
-        placeholder="Search categories..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className={styles["search-input"]}
-      />
 
-      {selectedCategory ? (
-        <>
-          <div className={styles["selected-category"]}>
-            <span>{selectedCategory}</span>
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={styles["close-button"]}
-            >
-              ×
-            </button>
-          </div>
-          <ul className={styles["questions-list"]}>
-            {data
-              .find((item) => item.category === selectedCategory)
-              ?.questions.map((item, index) => (
-                <li key={index} className={styles["question-item"]}>
-                  <div
-                    className={styles["question"]}
-                    onClick={() => toggleQuestion(index)}
-                  >
-                    {item.question}
-                    <span className={styles["toggle"]}>
-                      {expandedQuestions[index] ? "▲" : "▼"}
-                    </span>
-                  </div>
-                  {expandedQuestions[index] && (
-                    <div className={styles["answer"]}>{item.answer}</div>
-                  )}
-                </li>
-              ))}
-          </ul>
-        </>
-      ) : (
-        <ul className={styles["categories-list"]}>
-          {filteredCategories.map((item, index) => (
-            <li
-              key={index}
-              className={styles["category-item"]}
-              onClick={() => setSelectedCategory(item.category)}
-            >
-              {item.category}
-            </li>
+      {/* Search Input */}
+      <div className={styles["search-wrapper"]}>
+        <input
+          type="text"
+          placeholder="Search categories..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles["search-input"]}
+          list="category-suggestions"
+        />
+        <datalist id="category-suggestions">
+          {searchSuggestions.map((category, index) => (
+            <option key={index} value={category} />
           ))}
-        </ul>
-      )}
+        </datalist>
+      </div>
+
+      {/* Display Questions and Answers */}
+      <ul className={styles["questions-list"]}>
+        {filteredData.map((item, index) => (
+          <li key={item._id} className={styles["question-item"]}>
+            <div
+              className={styles["question"]}
+              onClick={() => toggleQuestion(index)}
+            >
+              {item.question}
+              <span className={styles["toggle"]}>
+                {expandedQuestions[index] ? "▲" : "▼"}
+              </span>
+            </div>
+            {expandedQuestions[index] && (
+              <div className={styles["answer"]}>{item.answer}</div>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
