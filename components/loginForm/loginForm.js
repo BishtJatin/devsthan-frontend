@@ -233,7 +233,7 @@ const LoginForm = ({ isComponent, toggleToLogin, toggleToHide ,toggleForgotPassw
           </p>
         ) : (
         
-          <Link href="/forgot/forgot" className={styles["link"]}>
+          <Link href="/forgot" className={styles["link"]}>
            Forgot Password
           </Link>
         )}
