@@ -296,28 +296,30 @@ const Destination = ({ destinationData, destinationBanner }) => {
           <Loader /> {/* Your loader component */}
         </div>
       ) : tours?.length > 0 ? (
-        <TourCarousel
-          responsive={responsive}
-          infinite={true}
-          autoPlay={false}
-          autoPlaySpeed={3000}
-        >
-          {tours?.map((data) => (
-            <div key={data?.uuid}>
-              <TourCard
-                data={data}
-                duration={data.duration}
-                location={data.location}
-                uuid={data.uuid}
-                imageUrl={data.bannerImage}
-                title={data.name}
-                // startingPrice={`Rs.${
-                //   data?.standardDetails?.pricing[0]?.price || "N/A"
-                // }`}
-              />
-            </div>
-          ))}
-        </TourCarousel>
+         <div> </div>
+
+        // <TourCarousel
+        //   responsive={responsive}
+        //   infinite={true}
+        //   autoPlay={false}
+        //   autoPlaySpeed={3000}
+        // >
+        //   {tours?.map((data) => (
+        //     <div key={data?.uuid}>
+        //       <TourCard
+        //         data={data}
+        //         duration={data.duration}
+        //         location={data.location}
+        //         uuid={data.uuid}
+        //         imageUrl={data.bannerImage}
+        //         title={data.name}
+        //         startingPrice={`Rs.${
+        //           data?.standardDetails?.pricing[0]?.price || "N/A"
+        //         }`}
+        //       />
+        //     </div>
+        //   ))}
+        // </TourCarousel>
       ) : error ? (
         <div className={styles['loading-text']}>
           <p>Error: {error}</p> {/* Show error message if there's an issue */}
