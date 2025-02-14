@@ -124,7 +124,7 @@
 }
 
 .alternate-btn{
-  background-color: #63ab45;
+  /* background-color: #63ab45;
   color: white;
   position: absolute;
   padding: 10px;
@@ -132,7 +132,13 @@
   max-height: 40px;
   cursor: pointer;
   bottom: 20;
-  right: 20;
+  right: 20; */
+  background-color: #63ab45;
+  color: white;
+  padding: 10px;
+  border: none;
+  max-height: 40px;
+  cursor: pointer;
 }
 
 
