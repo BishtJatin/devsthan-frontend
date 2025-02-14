@@ -218,7 +218,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
             )}
           </div>
           {/* Price Filter */}
-          <div className={styles["filter-section__price"]}>
+          {/* <div className={styles["filter-section__price"]}>
             <h3 className={styles["filter-section__title"]}>Price Filter</h3>
             <Slider
               style={{ marginBottom: "20px" }}
@@ -232,7 +232,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
               allowCross={false}
               dots
             />
-            {/* <div className={styles["filter-section__price-inputs"]}>
+            <div className={styles["filter-section__price-inputs"]}>
               <input
                 type="number"
                 defaultValue={minPrice}
@@ -243,8 +243,8 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
                 defaultValue={maxPrice}
                 className={styles["filter-section__price-max"]}
               />
-            </div> */}
-          </div>
+            </div>
+          </div> */}
 
           {/* Destination Filter */}
           <div className={styles["filter-section__destination"]}>
@@ -349,7 +349,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
             </div>
 
             {/* Price Filter */}
-            <div className={styles["filter-section__price"]}>
+            {/* <div className={styles["filter-section__price"]}>
               <h3 className={styles["filter-section__title"]}>Price Filter</h3>
               <Slider
                 style={{ marginBottom: "20px" }}
@@ -363,7 +363,7 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
                 allowCross={false}
                 dots
               />
-              {/* <div className={styles["filter-section__price-inputs"]}>
+              <div className={styles["filter-section__price-inputs"]}>
                 <input
                   type="number"
                   defaultValue={minPrice}
@@ -374,8 +374,8 @@ const TourCategory = ({ tourData, categories, locations, location }) => {
                   defaultValue={maxPrice}
                   className={styles["filter-section__price-max"]}
                 />
-              </div> */}
-            </div>
+              </div>
+            </div> */}
 
             {/* Destination Filter */}
             <div className={styles["filter-section__destination"]}>

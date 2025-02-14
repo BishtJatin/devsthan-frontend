@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import TourCard from '../tourCard/tourCard';
 
 const ToursList = ({ tourData }) => {
@@ -37,27 +37,39 @@ const ToursList = ({ tourData }) => {
     <>
       {tourData.length > 0 &&
         tourData.map((data) => {
-          let pricePerPerson = 0;
+          let priceDetails = {};
+          let fallbackToSeason = true;
 
           if (data.batch && data.batch.length > 0) {
             // Use batch data if available
-            const latestBatch = data.batch[data.batch.length - 1]; // Assuming the latest batch is the last in the array
-            const {
-              groupSharingPrice,
-              minPeople,
-            } = latestBatch;
+            const latestBatch = data.batch[data.batch.length - 1]; // Latest batch
+            const { groupSharingPrice, doubleSharingPrice, quadSharingPrice } = latestBatch;
 
-            // Calculate price per person using minPeople
-            if (groupSharingPrice && minPeople) {
-              pricePerPerson = groupSharingPrice / minPeople;
+            // Include all available pricing details
+            if (groupSharingPrice || doubleSharingPrice || quadSharingPrice) {
+              priceDetails = {
+                groupSharingPrice: groupSharingPrice || "N/A",
+                doubleSharingPrice: doubleSharingPrice || "N/A",
+                quadSharingPrice: quadSharingPrice || "N/A",
+              };
+              fallbackToSeason = false;
             }
-          } else if (data.isStandard) {
-            // Fallback to season pricing logic
-            pricePerPerson = getMaxPricePerPerson(data.standardDetails?.seasons);
-          } else if (data.isDeluxe) {
-            pricePerPerson = getMaxPricePerPerson(data.deluxeDetails?.seasons);
-          } else if (data.isPremium) {
-            pricePerPerson = getMaxPricePerPerson(data.premiumDetails?.seasons);
+          }
+
+          if (fallbackToSeason) {
+            if (data.isStandard) {
+              priceDetails = {
+                seasonPrice: `Rs.${Math.floor(getMaxPricePerPerson(data.standardDetails?.seasons))}`,
+              };
+            } else if (data.isDeluxe) {
+              priceDetails = {
+                seasonPrice: `Rs.${Math.floor(getMaxPricePerPerson(data.deluxeDetails?.seasons))}`,
+              };
+            } else if (data.isPremium) {
+              priceDetails = {
+                seasonPrice: `Rs.${Math.floor(getMaxPricePerPerson(data.premiumDetails?.seasons))}`,
+              };
+            }
           }
 
           return (
@@ -70,7 +82,7 @@ const ToursList = ({ tourData }) => {
               imageUrl={data.bannerImage}
               title={data.name}
               tourType={data.tourType}
-              startingPrice={`Rs.${Math.floor(pricePerPerson)}`} // Show the calculated price
+              pricingDetails={priceDetails} // Pass pricing details as a prop
             />
           );
         })}

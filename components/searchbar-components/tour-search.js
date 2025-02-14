@@ -64,7 +64,7 @@ const TourSearch = ({ locations }) => {
     if (!destination) {
       toast.error("Please select a destination!");
     } else {
-      router.push(`/tours/${destination.toLowerCase()}`);
+      router.push(`/packages/openhourtour/${destination.toLowerCase()}`);
     }
   };
 

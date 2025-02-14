@@ -12,11 +12,11 @@ import Loader from '../loader/loader'; // Assuming loader is a component or imag
 
 import { useRouter } from 'next/router';
 
-export default function TourCard({ duration, location, imageUrl, title, startingPrice, uuid, data ,tourType}) {
+export default function TourCard({ duration, location, imageUrl, title, pricingDetails, uuid, data ,tourType}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-
+  console.log(pricingDetails);
   const handleGoToTour = async () => {
     try {
       setIsLoading(true); // Start the loader
@@ -81,15 +81,31 @@ export default function TourCard({ duration, location, imageUrl, title, starting
       {/* Pricing and Button */}
       <div className={styles['pricing-and-button']}>
         <div className={styles['pricing']}>
-          <span className={styles['starting-from']}>Starting From:</span>
+        {pricingDetails.seasonPrice &&<> <span className={styles['starting-from']}>Starting From:</span>
           <div>
-            <span className={styles['starting-price']}>{startingPrice}<span className={styles['starting']}>/per person</span></span>
-          </div>
+            <span className={styles['starting-price']}>{pricingDetails.seasonPrice}<span className={styles['starting']}>/per person</span></span>
+          </div></>}
+          {pricingDetails.groupSharingPrice && (
+            <div className={styles['pricing']}>
+            <span className={styles['starting-from']}>Group Sharing Price: </span>
+           <span className={styles['starting-price']}>{pricingDetails.groupSharingPrice}<span className={styles['starting']}>/per person</span></span>
+           </div>  )}
+        {pricingDetails.doubleSharingPrice && (
+          <div className={styles['pricing']}>
+            <span className={styles['starting-from']}>Double Sharing Price:</span>
+          <span className={styles['starting-price']}> {pricingDetails.doubleSharingPrice}<span className={styles['starting']}>/per person</span></span>
+        </div>)}
+        {pricingDetails.quadSharingPrice && (
+           <div className={styles['pricing']}>
+            <span className={styles['starting-from']}>Quad Sharing Price:</span>
+          <span className={styles['starting-price']}>{pricingDetails.quadSharingPrice}<span className={styles['starting']}>/per person</span></span>
+          </div>)}
         </div>
         {isLoading ? (
           <Loader /> // Show the loader
         ) : (
-          <button className={styles['book-btn']} onClick={handleGoToTour}>
+          
+          <button className={pricingDetails.seasonPrice ? styles['book-btn'] : styles['alternate-btn']} onClick={handleGoToTour}>
             Book A Trip
           </button>
         )}

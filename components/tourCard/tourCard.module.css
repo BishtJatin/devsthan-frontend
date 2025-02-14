@@ -119,9 +119,22 @@
   color: white;
   padding: 10px;
   border: none;
-
+  max-height: 40px;
   cursor: pointer;
 }
+
+.alternate-btn{
+  background-color: #63ab45;
+  color: white;
+  position: absolute;
+  padding: 10px;
+  border: none;
+  max-height: 40px;
+  cursor: pointer;
+  bottom: 20;
+  right: 20;
+}
+
 
 .tour-features {
   display: flex;
