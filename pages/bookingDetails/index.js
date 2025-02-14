@@ -12,6 +12,7 @@ import FullScreenLoader from "../../components/fullScreenLoader/fullScreenLoader
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ForgotPasswordForm from "../../components/forgetForm/forgot.js";
 
 export default function TravellerDetails() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function TravellerDetails() {
   const [username, setUsername] = useState("");
   const [date, setDate] = useState("");
 
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [code, setCouponCode] = useState(""); // State for coupon code
   const [couponStatus, setCouponStatus] = useState(null);
   const [responsedata, setResponseData] = useState(null);
@@ -271,6 +273,10 @@ export default function TravellerDetails() {
     setRooms(updatedRooms);
   };
 
+  const toggleForgotPasswordMode = () => {
+    setShowForgotPassword((prev) => !prev); // Toggle the forgot password view
+  };
+
   const hidePanel = () => {
     setIsLoggedIn(true);
   };
@@ -454,14 +460,31 @@ export default function TravellerDetails() {
               <SignupForm
                 isComponent={true}
                 toggleToSignup={toggleRegisterMode}
+               
+                toggleToHide={hidePanel}
+              />
+            ) : showForgotPassword ? (
+              <ForgotPasswordForm
+                isComponent={true}
+                toggleToForgotPassword={toggleForgotPasswordMode}
                 toggleToHide={hidePanel}
               />
             ) : (
-              <LoginForm
-                isComponent={true}
-                toggleToLogin={toggleRegisterMode}
-                toggleToHide={hidePanel}
-              />
+              <div>
+                <LoginForm
+                  isComponent={true}
+                  toggleToLogin={toggleRegisterMode}
+                  toggleToHide={hidePanel}
+                  toggleToForgotPassword={toggleForgotPasswordMode}
+                />
+                <a
+                  href="#"
+                  className={styles["forget-password-link"]}
+                  onClick={toggleForgotPasswordMode}
+                >
+                  Forgot Password?
+                </a>
+              </div>
             )
           ) : (
             <h2>Welcome Back!</h2>

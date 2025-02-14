@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { apiCall } from "../../utils/common";
 
-const LoginForm = ({ isComponent, toggleToLogin, toggleToHide }) => {
-  const validateEmail = (email) => {
+const LoginForm = ({ isComponent, toggleToLogin, toggleToHide ,toggleForgotPasswordMode}) => {
+  const validateEmail = (email) => { 
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
@@ -224,6 +224,17 @@ const LoginForm = ({ isComponent, toggleToLogin, toggleToHide }) => {
         ) : (
           <Link href="/sign-up" className={styles["link"]}>
             Register
+          </Link>
+        )}
+      </div>
+      <div className={styles["login-text"]}>
+      {isComponent == true ? (
+          <p className={styles["link"]} onClick={toggleForgotPasswordMode}>
+          </p>
+        ) : (
+        
+          <Link href="/forgot/forgot" className={styles["link"]}>
+           Forgot Password
           </Link>
         )}
       </div>

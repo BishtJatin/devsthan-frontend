@@ -17,7 +17,10 @@
 }
 
 
-
+.forget-password-link{
+  margin-left: 345px;
+  margin-bottom: 5px;
+}
 
 
 .coupon-input {
@@ -230,6 +233,10 @@
 
   .traveller-row-merge {
     flex-direction: column;
+  }
+
+  .forget-password-link{
+    margin-left: 90px;
   }
 
 }

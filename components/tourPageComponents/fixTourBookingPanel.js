@@ -54,17 +54,17 @@ const FixTourBookingPanel = ({ tourAllData }) => {
   const uuid = tourAllData[0].uuid;
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 990px)');
+    const mediaQuery = window.matchMedia("(min-width: 990px)");
     setIsLargeScreen(mediaQuery.matches);
 
     const handleResize = (e) => {
       setIsLargeScreen(e.matches);
     };
 
-    mediaQuery.addEventListener('change', handleResize);
+    mediaQuery.addEventListener("change", handleResize);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleResize);
+      mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
 
@@ -193,8 +193,11 @@ const FixTourBookingPanel = ({ tourAllData }) => {
           tourId: tourAllData[0].uuid,
           batchId: bookbutton.seasonId,
           tourType: "fixedTour",
-            ...(selectedPayment === "partial" && { partialPayment: tourAllData[0]?.partialPayment?.amount }),
-          priceCategory: selectedPrices[bookbutton.seasonId] || "doubleSharingPrice", // Default to "doubleSharingPrice"
+          ...(selectedPayment === "partial" && {
+            partialPayment: tourAllData[0]?.partialPayment?.amount,
+          }),
+          priceCategory:
+            selectedPrices[bookbutton.seasonId] || "doubleSharingPrice", // Default to "doubleSharingPrice"
           ...(token ? { token } : { userTempId }),
         },
       });
@@ -368,133 +371,143 @@ const FixTourBookingPanel = ({ tourAllData }) => {
   return (
     <>
       <div className={styles["tour-booking-panel-outer"]}>
-      <div className={styles["tour-seasonsCardfix"]}>
-      <h1 className={styles["tour-seasonsCard-headingfix"]}>Seasons</h1>
+        <div className={styles["tour-seasonsCardfix"]}>
+          <h1 className={styles["tour-seasonsCard-headingfix"]}>Seasons</h1>
 
-      {/* Month Buttons */}
-      <div className={styles["filter-buttons"]}>
-        <button
-          className={`${styles["filter-button"]} ${
-            selectedMonth === "All" ? styles["active-button"] : ""
-          }`}
-          onClick={() => setSelectedMonth("All")}
-        >
-          All
-        </button>
-        {uniqueMonths.map((month) => (
-          <button
-            key={month}
-            className={`${styles["filter-button"]} ${
-              selectedMonth === month.toString() ? styles["active-button"] : ""
-            }`}
-            onClick={() => setSelectedMonth(month.toString())}
-          >
-            {new Date(0, month - 1).toLocaleString("default", { month: "short" })}
-          </button>
-        ))}
-      </div>
+          {/* Month Buttons */}
+          <div className={styles["filter-buttons"]}>
+            <button
+              className={`${styles["filter-button"]} ${
+                selectedMonth === "All" ? styles["active-button"] : ""
+              }`}
+              onClick={() => setSelectedMonth("All")}
+            >
+              All
+            </button>
+            {uniqueMonths.map((month) => (
+              <button
+                key={month}
+                className={`${styles["filter-button"]} ${
+                  selectedMonth === month.toString()
+                    ? styles["active-button"]
+                    : ""
+                }`}
+                onClick={() => setSelectedMonth(month.toString())}
+              >
+                {new Date(0, month - 1).toLocaleString("default", {
+                  month: "short",
+                })}
+              </button>
+            ))}
+          </div>
 
-      <div className={styles["seasonsCardfix"]}>
-        {filteredBatches.map((season, index) => {
-          const selectedPrice =
-            season.selectedPrices?.[season._id] || "doubleSharingPrice";
+          <div className={styles["seasonsCardfix"]}>
+            {filteredBatches.map((season, index) => {
+              const selectedPrice =
+                season.selectedPrices?.[season._id] || "doubleSharingPrice";
 
-          return (
-            <div key={season._id} className={styles["seasonsCard-itemfix"]}>
-              <div className={styles["seasonsCard-itfix"]}>
-                <p className={styles["seasonsCard-datefix"]}>
-                  <strong>
-                    <IoLocationOutline style={{ color: "green" }} /> Starts{" "}
-                    {formatDay(season.tourStartDate)}
-                  </strong>
-                  <span>{formatDate(season.tourStartDate)}</span>
-                </p>
-                <p className={styles["seasonsCard-datefix"]}>
-                  <strong>
-                    <IoLocationOutline style={{ color: "red" }} /> Ends{" "}
-                    {formatDay(season.tourEndDate)}
-                  </strong>
-                  <span>{formatDate(season.tourEndDate)}</span>
-                </p>
-              </div>
-
-              <div className={styles["seasonsCard-itsfix"]}>
-                <div className={styles["sharing-optionsfix"]}>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`sharing-${season._id}`}
-                      value="doubleSharingPrice"
-                      checked={selectedPrice === "doubleSharingPrice"}
-                      onChange={() =>
-                        handlePriceChange(season._id, "doubleSharingPrice")
-                      }
-                      style={{ marginRight: "8px" }}
-                    />
-                    Double Sharing
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`sharing-${season._id}`}
-                      value="groupSharingPrice"
-                      checked={selectedPrice === "groupSharingPrice"}
-                      onChange={() =>
-                        handlePriceChange(season._id, "groupSharingPrice")
-                      }
-                      style={{ marginRight: "8px" }}
-                    />
-                    Group Sharing
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name={`sharing-${season._id}`}
-                      value="quadSharingPrice"
-                      checked={selectedPrice === "quadSharingPrice"}
-                      onChange={() =>
-                        handlePriceChange(season._id, "quadSharingPrice")
-                      }
-                      style={{ marginRight: "8px" }}
-                    />
-                    Quad Sharing
-                  </label>
-                </div>
-
-                <div className={styles["Selected-Pricefix"]}>
-                  <div>
-                    <p>
-                      <strong>Selected Price:</strong> ₹{season[selectedPrice]}
+              return (
+                <div key={season._id} className={styles["seasonsCard-itemfix"]}>
+                  <div className={styles["seasonsCard-itfix"]}>
+                    <p className={styles["seasonsCard-datefix"]}>
+                      <strong>
+                        <IoLocationOutline style={{ color: "green" }} /> Starts{" "}
+                        {formatDay(season.tourStartDate)}
+                      </strong>
+                      <span>{formatDate(season.tourStartDate)}</span>
                     </p>
-                    <p className={styles["Selected-Pricefix1"]}>
-                      <strong>Group Size:</strong> {season.groupSize}
+                    <p className={styles["seasonsCard-datefix"]}>
+                      <strong>
+                        <IoLocationOutline style={{ color: "red" }} /> Ends{" "}
+                        {formatDay(season.tourEndDate)}
+                      </strong>
+                      <span>{formatDate(season.tourEndDate)}</span>
                     </p>
                   </div>
-                  <div>
-                    <p>
-                      <strong>Seats Booked:</strong> {season.seatBooked}
-                    </p>
-                    <div className={styles["Selected-icons"]}>
-                      <FaWhatsapp />
-                      <MdMail />
-                      <FaPhoneAlt />
+
+                  <div className={styles["seasonsCard-itsfix"]}>
+                    <div className={styles["sharing-optionsfix"]}>
+                      <label>
+                        <input
+                          type="radio"
+                          name={`sharing-${season._id}`}
+                          value="doubleSharingPrice"
+                          checked={
+                            selectedPrices[season._id] === "doubleSharingPrice"
+                          }
+                          onChange={() =>
+                            handlePriceChange(season._id, "doubleSharingPrice")
+                          }
+                          style={{ marginRight: "8px" }}
+                        />
+                        Double Sharing
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={`sharing-${season._id}`}
+                          value="groupSharingPrice"
+                          checked={
+                            selectedPrices[season._id] === "groupSharingPrice"
+                          }
+                          onChange={() =>
+                            handlePriceChange(season._id, "groupSharingPrice")
+                          }
+                          style={{ marginRight: "8px" }}
+                        />
+                        Group Sharing
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          name={`sharing-${season._id}`}
+                          value="quadSharingPrice"
+                          checked={
+                            selectedPrices[season._id] === "quadSharingPrice"
+                          }
+                          onChange={() =>
+                            handlePriceChange(season._id, "quadSharingPrice")
+                          }
+                          style={{ marginRight: "8px" }}
+                        />
+                        Quad Sharing
+                      </label>
+                    </div>
+
+                    <div className={styles["Selected-Pricefix"]}>
+                      <div>
+                        <p>
+                        <strong>Selected Price:</strong> ₹{season[selectedPrices[season._id]] || "N/A"}
+                        </p>
+                        <p className={styles["Selected-Pricefix1"]}>
+                          <strong>Group Size:</strong> {season.groupSize}
+                        </p>
+                      </div>
+                      <div>
+                        <p>
+                          <strong>Seats Booked:</strong> {season.seatBooked}
+                        </p>
+                        <div className={styles["Selected-icons"]}>
+                          <FaWhatsapp />
+                          <MdMail />
+                          <FaPhoneAlt />
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <button
+                    className={styles["tour-booking-button-fix"]}
+                    onClick={() =>
+                      callbutton(index, season._id, season[selectedPrices[season._id]])
+                    }
+                  >
+                    Book Now
+                  </button>
                 </div>
-              </div>
-              <button
-                className={styles["tour-booking-button-fix"]}
-                onClick={() =>
-                  callbutton(index, season._id, season[selectedPrice])
-                }
-              >
-                Book Now
-              </button>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+              );
+            })}
+          </div>
+        </div>
         {showDialouge && (
           <div className={styles["dialog-overlay"]}>
             <div className={styles["dialog-box"]}>
@@ -598,55 +611,59 @@ const FixTourBookingPanel = ({ tourAllData }) => {
         {showCustomizeDialog && (
           <CustomizedQuery uuid={uuid} handleClose={close} />
         )}
-         {isLargeScreen && (
-        <div className={styles["tour-booking-panel"]}>
-          <p className={styles["panel-heading"]}>Book Your Tour</p>
-          <p className={styles["panel-des"]}>
-            Reserve your ideal trip early for a hassle-free trip; secure comfort
-            and convenience!
-          </p>
-          <form className={styles["inquiryForm"]} onSubmit={handleSubmit}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              minLength="2"
-            />
+        {isLargeScreen && (
+          <div className={styles["tour-booking-panel"]}>
+            <p className={styles["panel-heading"]}>Book Your Tour</p>
+            <p className={styles["panel-des"]}>
+              Reserve your ideal trip early for a hassle-free trip; secure
+              comfort and convenience!
+            </p>
+            <form className={styles["inquiryForm"]} onSubmit={handleSubmit}>
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                minLength="2"
+              />
 
-            <label>Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              pattern="\d{10}"
-              title="Phone must be a 10-digit number"
-            />
+              <label>Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                pattern="\d{10}"
+                title="Phone must be a 10-digit number"
+              />
 
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
 
-            <label>Message</label>
-            <input
-              type="text"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-            {loadingSubmit ? <Loader /> : <button type="submit">Submit</button>}
-          </form>
-        </div>
-      )}
+              <label>Message</label>
+              <input
+                type="text"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              />
+              {loadingSubmit ? (
+                <Loader />
+              ) : (
+                <button type="submit">Submit</button>
+              )}
+            </form>
+          </div>
+        )}
       </div>
     </>
   );
